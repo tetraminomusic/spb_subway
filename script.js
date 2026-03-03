@@ -6,7 +6,6 @@ const stImg = document.getElementById('st-img');
 const stInfo = document.getElementById('st-info');
 const closeBtn = document.getElementById('close-btn');
 
-// --- 1. ПРЕВРАЩАЕМ ТЕГИ ---
 function initCustomTags() {
     document.querySelectorAll('half-circle').forEach(el => {
         const cx = parseFloat(el.getAttribute('cx')), cy = parseFloat(el.getAttribute('cy')), r = parseFloat(el.getAttribute('r')), side = el.getAttribute('side');
@@ -30,7 +29,6 @@ function replaceEl(el, d) {
 
 initCustomTags();
 
-// --- 2. ФУНКЦИЯ ПОКАЗА ИНФОРМАЦИИ ---
 function openTooltip(station) {
     stName.innerText = station.getAttribute('data-name') || "Неизвестная станция";
     stDesc.innerHTML = `<strong>Тип:</strong> ${station.getAttribute('data-type')}<br><strong>Открыта:</strong> ${station.getAttribute('data-year')} г.<br><strong>Архитектор:</strong> ${station.getAttribute('data-arch')}`;
@@ -46,11 +44,9 @@ function openTooltip(station) {
     const color = station.getAttribute('data-color') || '#888';
     
     if (window.innerWidth <= 992) {
-        // Убиваем инлайн-стили от ПК
         tooltip.removeAttribute('style'); 
         tooltip.style.borderTopColor = color;
         
-        // Включаем блок и через 10мс запускаем анимацию
         tooltip.style.display = 'block';
         setTimeout(() => {
             tooltip.classList.add('active');
@@ -61,44 +57,34 @@ function openTooltip(station) {
     }
 }
 
-// --- 3. ГЛОБАЛЬНЫЙ ПЕРЕХВАТ КЛИКОВ (САМОЕ ВАЖНОЕ) ---
-// Ловим любой клик на странице
 document.addEventListener('click', function(e) {
-    // Ищем, не кликнули ли мы случайно по станции или внутри неё
     const station = e.target.closest('.station');
     
     if (station && window.innerWidth <= 992) {
-        e.preventDefault(); // Останавливаем стандартное поведение браузера
+        e.preventDefault(); 
         
-        // Красим нажатую станцию
         document.querySelectorAll('.station').forEach(s => s.classList.remove('touched'));
         station.classList.add('touched');
         
-        // Показываем данные
         openTooltip(station);
     }
 });
 
-// КНОПКА ЗАКРЫТИЯ НА ТЕЛЕФОНЕ
 if (closeBtn) {
     closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         
-        // Запускаем анимацию исчезновения
         tooltip.classList.remove('active');
         
-        // Ждем окончания анимации (0.3с) и полностью прячем блок
         setTimeout(() => { 
             tooltip.style.display = 'none'; 
         }, 300);
         
-        // Убираем желтую подсветку со станции
         document.querySelectorAll('.station').forEach(s => s.classList.remove('touched'));
     });
 }
 
-// --- 4. СОБЫТИЯ ДЛЯ ПК (Наведение мыши) ---
 const stations = document.querySelectorAll('.station');
 stations.forEach(station => {
     station.addEventListener('mouseenter', function() {
@@ -117,7 +103,6 @@ stations.forEach(station => {
     });
 });
 
-// Движение курсора (только ПК)
 document.addEventListener('mousemove', (e) => {
     if (window.innerWidth > 992) {
         cursor.style.left = e.clientX + 'px';
@@ -136,5 +121,4 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// Заглушка для фото
 stImg.onerror = function() { this.style.display = 'none'; };

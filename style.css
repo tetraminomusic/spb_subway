@@ -14,11 +14,18 @@ body {
     cursor: none; 
 }
 
-.container { width: 100vw; display: block; }
-#metro-map { width: 100%; height: auto; display: block; }
-#metro-map image { pointer-events: none; /* Фон не ворует клики! */ }
+.container {
+    width: 100vw; display: block;
+}
 
-/* Станции */
+#metro-map {
+    width: 100%; height: auto; display: block;
+}
+
+#metro-map image {
+    pointer-events: none;
+}
+
 .station {
     fill: #ffffff;      
     stroke: #333333;    
@@ -27,7 +34,7 @@ body {
     transition: transform 0.2s ease;
     transform-origin: center;
     transform-box: fill-box; 
-    pointer-events: all !important; /* Гарантия клика */
+    pointer-events: all !important;
     -webkit-tap-highlight-color: transparent; 
 }
 
@@ -54,9 +61,7 @@ body {
 .legend h2 { margin: 0 0 5px 0; font-size: 18px; }
 .legend p { margin: 0; font-size: 13px; color: #555; }
 
-/* ================================== */
-/* ТУЛТИП ДЛЯ КОМПЬЮТЕРА (По умолчанию) */
-/* ================================== */
+
 #tooltip {
     display: none; 
     position: fixed; 
@@ -73,12 +78,7 @@ body {
 #st-info { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-style: italic; }
 #close-btn { display: none; }
 
-/* ================================== */
-/* МЕДИА-ЗАПРОС ДЛЯ ТЕЛЕФОНОВ (< 992px) */
-/* ================================== */
-/* ================================== */
-/* МЕДИА-ЗАПРОС ДЛЯ ТЕЛЕФОНОВ (< 992px) */
-/* ================================== */
+
 @media (max-width: 992px) {
     body { 
         cursor: auto; 
@@ -88,7 +88,7 @@ body {
     #custom-cursor { display: none !important; }
     
     .container { 
-        width: 300vw; /* Сохраняем зум карты */
+        width: 300vw;
         position: relative; 
     }
     
@@ -97,74 +97,62 @@ body {
     }
     .legend h2 { font-size: 16px; }
 
-    /* ======================================= */
-    /* МОБИЛЬНОЕ ВСПЛЫВАЮЩЕЕ ОКНО (ПО ЦЕНТРУ)  */
-    /* ======================================= */
     #tooltip {
-        display: none; /* Скрыто по умолчанию */
+        display: none;
         position: fixed !important;
         
-        /* Центрирование по экрану */
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) scale(0.9) !important;
         
-        /* Фиксированный размер карточки */
-        width: 90vw !important; /* 90% ширины экрана телефона */
-        max-width: 380px !important; /* Не шире 380px на планшетах */
+        width: 90vw !important; 
+        max-width: 380px !important;
         height: auto;
-        max-height: 80vh; /* Чтобы не вылезло за высоту экрана */
-        overflow-y: auto; /* Скролл, если много текста */
+        max-height: 80vh; 
+        overflow-y: auto;
         
         background: rgba(30, 30, 30, 0.98);
         z-index: 999999 !important;
         
-        /* Декорации */
         border-left: none !important; 
-        border-top: 6px solid gold; /* Цвет ветки */
+        border-top: 6px solid gold;
         border-radius: 12px; 
         padding: 20px;
         box-sizing: border-box;
         box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         pointer-events: all !important;
         
-        /* Анимация появления */
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease !important;
     }
 
-    /* АКТИВНОЕ ОКНО */
     #tooltip.active {
         display: block !important;
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1) !important; /* Эффект "выныривания" */
+        transform: translate(-50%, -50%) scale(1) !important;
     }
 
     #tooltip img { height: 180px; }
     #st-name { font-size: 22px; padding-right: 40px; margin-top: 0; }
 
-    /* ======================================= */
-    /* КРЕСТИК ВНУТРИ ОКНА В ПРАВОМ ВЕРХНЕМ УГЛУ */
-    /* ======================================= */
+
     #close-btn {
         display: flex !important; 
         position: absolute;
-        top: 12px;  /* Чуть ближе к краю */
+        top: 12px; 
         right: 12px; 
-        width: 38px; /* Увеличили размер */
+        width: 38px; 
         height: 38px;
         
-        /* Делаем кнопку максимально контрастной */
         background: #ffffff; 
         color: #000000; 
         border-radius: 50%;
         border: none;
         
-        /* Добавляем тень, чтобы кнопка выделялась даже на светлых фото */
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
         
-        font-size: 26px; /* Крестик крупнее */
-        font-weight: bold; /* Делаем линии крестика толще */
+        font-size: 26px;
+        font-weight: bold;
         
         justify-content: center; 
         align-items: center;
@@ -173,7 +161,6 @@ body {
         line-height: 1;
     }
     
-    /* Эффект при нажатии (чтобы было понятно, что кнопка сработала) */
     #close-btn:active {
         background: #eeeeee;
         transform: scale(0.95);
