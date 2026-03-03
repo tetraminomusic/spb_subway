@@ -149,19 +149,33 @@ body {
     #close-btn {
         display: flex !important; 
         position: absolute;
-        top: 15px; 
-        right: 15px; 
-        width: 35px; 
-        height: 35px;
-        background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
-        color: #fff; /* Белый крестик */
+        top: 12px;  /* Чуть ближе к краю */
+        right: 12px; 
+        width: 38px; /* Увеличили размер */
+        height: 38px;
+        
+        /* Делаем кнопку максимально контрастной */
+        background: #ffffff; 
+        color: #000000; 
         border-radius: 50%;
         border: none;
-        font-size: 24px; 
+        
+        /* Добавляем тень, чтобы кнопка выделялась даже на светлых фото */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
+        
+        font-size: 26px; /* Крестик крупнее */
+        font-weight: bold; /* Делаем линии крестика толще */
+        
         justify-content: center; 
         align-items: center;
         z-index: 100000; 
         cursor: pointer;
         line-height: 1;
+    }
+    
+    /* Эффект при нажатии (чтобы было понятно, что кнопка сработала) */
+    #close-btn:active {
+        background: #eeeeee;
+        transform: scale(0.95);
     }
 }
