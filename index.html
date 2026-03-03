@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивная карта метро СПб</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="legend">
+        <h2>Метрополитен СПб</h2>
+        <p>Наведите на станцию для информации.</p>
+    </div>
+
+    <div class="container">
+        <svg id="metro-map" viewBox="0 0 1824 2046" preserveAspectRatio="xMidYMid meet">
+            
+            <!-- ФОН (ВНЕШНИЙ ФАЙЛ MAP.SVG) -->
+            <image href="map.svg" x="0" y="0" width="1824" height="2046" />
+
+            <!-- СЛОЙ С ВИДИМЫМИ ТОЧКАМИ СТАНЦИЙ -->
+            
+            <!-- Синяя ветка -->
+            <circle class="station" cx="789" cy="1791" r="13" 
+                data-name="Купчино" 
+                data-type="Наземная" 
+                data-year="1972" 
+                data-arch="К. Н. Афонская"
+                data-img="img/kupchino.jpg"
+                data-info="Первая в России станция, объединенная с железнодорожным вокзалом. Крупнейший транспортный узел на юге города."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1737" r="13" 
+                data-name="Звёздная" 
+                data-type="Станция закрытого типа" 
+                data-year="1972" 
+                data-arch="Ю. В. Билинский"
+                data-img="img/zvyozdnaya.jpg"
+                data-info="Названа по одноименной улице. В оформлении использована тема освоения космоса."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1684" r="13" 
+                data-name="Московская" 
+                data-type="Станция закрытого типа" 
+                data-year="1969" 
+                data-arch="С. Г. Майофис"
+                data-img="img/moskovskaya.jpg"
+                data-info="Имеет самый длинный в мире подземный переход под Московским проспектом. Отсюда идут автобусы в аэропорт Пулково."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1614" r="13" 
+                data-name="Парк Победы" 
+                data-type="Станция закрытого типа" 
+                data-year="1961" 
+                data-arch="А. К. Андреев"
+                data-img="img/park_pobedu.jpg"
+                data-info="Первая в мире станция типа «горизонтальный лифт» (с автоматическими дверями на платформе)."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1543" r="13" 
+                data-name="Электросила" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1961" 
+                data-arch="С. Г. Майофис"
+                data-img="img/electrosila.jpg"
+                data-info="Названа по расположенному рядом электромашиностроительному заводу «Электросила»."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1441" r="13" 
+                data-name="Московские ворота" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1961" 
+                data-arch="В. А. Петров"
+                data-img="img/moskovskie_vorota.jpg"
+                data-info="В торце центрального зала установлено скульптурное изображение элементов Московских Триумфальных ворот."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="1378" r="13" 
+                data-name="Фрунзенская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1961" 
+                data-arch="Б. Н. Журавлёв"
+                data-img="img/frunzenskaya.jpg"
+                data-info="Названа в честь революционера и военачальника Михаила Фрунзе. Сейчас находится на масштабной реконструкции."
+                data-color="var(--line-2)" />
+
+            <half-circle class="station" cx="790" cy="1266" r="22" side="right" 
+                data-name="Технологический институт 2" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1961" 
+                data-arch="А. И. Прибульский" 
+                data-img="img/tehnologichesky_insitut2.jpg"
+                data-info="Уникальный кросс-платформенный узел. С этой платформы поезда уходят в сторону Парнаса и Девяткино."
+                data-color="var(--line-2)" />
+
+            <third-circle class="station" cx="786" cy="1043" r="23" rotate="60" 
+                data-name="Сенная площадь" 
+                data-type="Пилонная глубокого заложения"
+                data-year="1963"
+                data-arch="А. И. Прибульский"
+                data-img="img/sennya_ploshad.jpg"
+                data-info="До 1992 года называлась «Площадь Мира». Центральный узел пересадки на Линии 4 и 5."
+                data-color="var(--line-2)" />
+
+            <half-circle class="station" cx="787" cy="912" r="22" side="left" 
+                data-name="Невский проспект" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1963" 
+                data-arch="С. Г. Майофис"
+                data-img="img/nevskiy_prospect.jpg"
+                data-info="Самая оживленная станция. Имеет пересадочный узел на станцию «Гостиный двор» Зеленой линии."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="754" r="13" 
+                data-name="Горьковская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1963" 
+                data-arch="С. Г. Майофис"
+                data-img="img/gorkovskaya.jpg"
+                data-info="Названа в честь писателя Максима Горького. Наземный павильон станции напоминает летающую тарелку."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="613" r="13" 
+                data-name="Петроградская" 
+                data-type="Станция закрытого типа" 
+                data-year="1963" 
+                data-arch="А. К. Андреев"
+                data-img="img/petrogradskaya.jpg"
+                data-info="Расположена в историческом районе на Петроградской стороне. Подземный зал украшен панно из керамики."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="452" r="13" 
+                data-name="Чёрная речка" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1982" 
+                data-arch="Г. Н. Булдаков"
+                data-img="img/сhyornaya_rechka.jpg"
+                data-info="Расположена недалеко от места последней дуэли А. С. Пушкина, чему посвящена скульптура в торце зала."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="372" r="13" 
+                data-name="Пионерская" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1982" 
+                data-arch="А. С. Гецкин"
+                data-img="img/pionerskaya.jpg"
+                data-info="Станция была открыта к 60-летию Всесоюзной пионерской организации."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="296" r="13" 
+                data-name="Удельная" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1982" 
+                data-arch="А. С. Гецкин"
+                data-img="img/udelnaya.jpg"
+                data-info="Имеет выход к железнодорожной платформе Удельная. В оформлении использована тема авиации."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="217" r="13" 
+                data-name="Озерки" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1988" 
+                data-arch="Г. Н. Булдаков"
+                data-img="img/ozerki.jpg"
+                data-info="Оформлена мозаиками, изображающими природу русского севера. Названа из-за близости к Суздальским озёрам."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="142" r="13" 
+                data-name="Проспект Просвещения" 
+                data-type="Колонно-стеновая глубокого заложения" 
+                data-year="1988" 
+                data-arch="Ю. В. Билинский"
+                data-img="img/prospect_prosvesheina.jpg"
+                data-info="Интерьер украшен светильниками в виде факелов. Станция обслуживает огромный жилой район на севере города."
+                data-color="var(--line-2)" />
+
+            <circle class="station" cx="789" cy="73" r="13" 
+                data-name="Парнас" 
+                data-type="Наземная крытая" 
+                data-year="2006" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="img/parnas.jpg"
+                data-info="Самая северная станция метро в России. Оформлена витражами на тему древнегреческих мифов."
+                data-color="var(--line-2)" />
+
+            <!-- Красная ветка -->
+
+            <!-- Красная ветка (Линия 1) -->
+
+            <circle class="station" cx="302" cy="1755" r="13" 
+                data-name="Проспект Ветеранов" 
+                data-type="Колонная мелкого заложения" 
+                data-year="1977" 
+                data-arch="В. Г. Хильченко"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Prospekt_Veteranov_metrostation_asv2018-05.jpg/400px-Prospekt_Veteranov_metrostation_asv2018-05.jpg"
+                data-info="Самая загруженная станция в России после московских. Является южной конечной точкой первой линии."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="302" cy="1683" r="13" 
+                data-name="Ленинский проспект" 
+                data-type="Колонная мелкого заложения" 
+                data-year="1977" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Leninsky_Prospekt_metrostation_asv2018-05.jpg/400px-Leninsky_Prospekt_metrostation_asv2018-05.jpg"
+                data-info="Станция построена без наземного павильона, входы совмещены с подземными переходами."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="302" cy="1625" r="13" 
+                data-name="Автово" 
+                data-type="Колонная мелкого заложения" 
+                data-year="1955" 
+                data-arch="Е. А. Левинсон"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Metrostroy_Avtovo_Platform.jpg/400px-Metrostroy_Avtovo_Platform.jpg"
+                data-info="Входит в список самых красивых станций мира. Знаменита своими стеклянными колоннами и роскошными люстрами."
+                data-color="var(--line-1)" />
+
+            <half-circle class="station" cx="300" cy="1562" r="22" side="left" 
+                data-name="Кировский завод" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="А. К. Андреев"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Kirovsky_Zavod_metrostation_asv2018-05.jpg/400px-Kirovsky_Zavod_metrostation_asv2018-05.jpg"
+                data-info="Украшена 31 барельефом, посвященным развитию тяжелой индустрии СССР. Имеет пересадку на станцию Путиловская."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="386" cy="1453" r="13" 
+                data-name="Нарвская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="А. В. Васильев"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Narvskaya_metrostation_asv2018-05.jpg/400px-Narvskaya_metrostation_asv2018-05.jpg"
+                data-info="Павильон станции напоминает античный храм. Тематика оформления — трудовая доблесть советского народа."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="544" cy="1379" r="13" 
+                data-name="Балтийская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="М. К. Бенуа"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Baltiyskaya_metrostation_asv2018-05.jpg/400px-Baltiyskaya_metrostation_asv2018-05.jpg"
+                data-info="Расположена у Балтийского вокзала. Голубоватый мрамор отделки символизирует морскую стихию."
+                data-color="var(--line-1)" />
+
+            <half-circle class="station" cx="787" cy="1266" r="22" side="left" 
+                data-name="Технологический институт 1" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="А. М. Соколов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Tekhnologichesky_Institut_metro_station_in_Saint_Petersburg.jpg/400px-Tekhnologichesky_Institut_metro_station_in_Saint_Petersburg.jpg"
+                data-info="Первый в СССР кросс-платформенный узел. Зал украшен барельефами выдающихся отечественных ученых."
+                data-color="var(--line-1)" />
+
+            <half-circle class="station" cx="930" cy="1202" r="22" side="left"
+                data-name="Пушкинская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1956" 
+                data-arch="Л. М. Поляков"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pushkinskaya_metrostation_asv2018-05.jpg/400px-Pushkinskaya_metrostation_asv2018-05.jpg"
+                data-info="Считается одной из самых изящных станций. В торце зала установлен памятник А. С. Пушкину на фоне Царскосельского парка."
+                data-color="var(--line-1)" />
+
+            <half-circle class="station" cx="1120" cy="1041" r="22" side="left" 
+                data-name="Владимирская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="Г. И. Александров"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Vladimirskaya_metrostation_asv2018-05.jpg/400px-Vladimirskaya_metrostation_asv2018-05.jpg"
+                data-info="Названа по Владимирской площади. В 1991 году была соединена переходом со станцией Достоевская."
+                data-color="var(--line-1)" />
+
+            <half-circle class="station" cx="1122" cy="912" r="22" side="right" 
+                data-name="Площадь Восстания" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1955" 
+                data-arch="И. И. Фомин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Ploshchad_Vosstaniya_metro_station_01.jpg/400px-Ploshchad_Vosstaniya_metro_station_01.jpg"
+                data-info="Центральный узел города. Оформлена в стиле сталинского ампира с барельефами на тему Октябрьской революции."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="804" r="13" 
+                data-name="Чернышевская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1958" 
+                data-arch="А. В. Жук"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Chernyshevskaya_metro_station_in_Saint_Petersburg.jpg/400px-Chernyshevskaya_metro_station_in_Saint_Petersburg.jpg"
+                data-info="Названа в честь Николая Чернышевского. В данный момент открыта после масштабной реконструкции эскалаторного зала."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="706" r="13" 
+                data-name="Площадь Ленина" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="1958" 
+                data-arch="А. К. Андреев"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Ploshchad_Lenina_metrostation_asv2018-05.jpg/400px-Ploshchad_Lenina_metrostation_asv2018-05.jpg"
+                data-info="Один из выходов ведет прямо в здание Финляндского вокзала. Украшена панно, посвященным приезду Ленина в Петроград."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="614" r="13" 
+                data-name="Выборгская" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1975" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Vyborgskaya_metrostation_asv2018-05.jpg/400px-Vyborgskaya_metrostation_asv2018-05.jpg"
+                data-info="Названа по историческому району города. Через неё проходит самый длинный пешеходный переход в метро СПб."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="523" r="13" 
+                data-name="Лесная" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1975" 
+                data-arch="А. И. Прибульский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Lesnaya_metrostation_asv2018-05.jpg/400px-Lesnaya_metrostation_asv2018-05.jpg"
+                data-info="С 1995 по 2004 год была конечной для северного участка из-за знаменитого Размыва — затопления тоннелей."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="371" r="13" 
+                data-name="Площадь Мужества" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1975" 
+                data-arch="Е. М. Рапопорт"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Ploshchad_Muzhestva_metrostation_asv2018-05.jpg/400px-Ploshchad_Muzhestva_metrostation_asv2018-05.jpg"
+                data-info="Посвящена героизму ленинградцев в годы блокады. Находится рядом с Пискарёвским мемориальным кладбищем."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="307" r="13" 
+                data-name="Политехническая" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1975" 
+                data-arch="С. Б. Сперанский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Politekhnicheskaya_metrostation_asv2018-05.jpg/400px-Politekhnicheskaya_metrostation_asv2018-05.jpg"
+                data-info="Станция без колонн (односвод). Названа в честь расположенного рядом Политехнического университета."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="228" r="13" 
+                data-name="Академическая" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1975" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Akademicheskaya_metrostation_asv2018-05.jpg/400px-Akademicheskaya_metrostation_asv2018-05.jpg"
+                data-info="Оформлена нержавеющей сталью. Названа так из-за обилия научно-исследовательских институтов в округе."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="150" r="13" 
+                data-name="Гражданский проспект" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1978" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Grazhdansky_Prospekt_metrostation_asv2018-05.jpg/400px-Grazhdansky_Prospekt_metrostation_asv2018-05.jpg"
+                data-info="В торце зала находится бронзовый герб СССР диаметром более 3 метров."
+                data-color="var(--line-1)" />
+
+            <circle class="station" cx="1121" cy="73" r="13" 
+                data-name="Девяткино" 
+                data-type="Наземная крытая" 
+                data-year="1978" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Devyatkino_metrostation_04.jpg/400px-Devyatkino_metrostation_04.jpg"
+                data-info="Единственная станция петербургского метро, находящаяся на территории Ленинградской области."
+                data-color="var(--line-1)" />
+
+            <!-- Фиолетовая ветка -->
+
+            <circle class="station" cx="1146" cy="1946" r="13" 
+                data-name="Шушары" 
+                data-type="Наземная крытая" 
+                data-year="2019" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Shushary_metro_station_01.jpg/400px-Shushary_metro_station_01.jpg"
+                data-info="Конечная станция южного радиуса. Расположена в промышленной зоне рядом с автомобильными заводами."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1146" cy="1842" r="13" 
+                data-name="Дунайская" 
+                data-type="Колонная мелкого заложения" 
+                data-year="2019" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Dunayskaya_metro_station_01.jpg/400px-Dunayskaya_metro_station_01.jpg"
+                data-info="Станция украшена витражами с изображениями городов, расположенных на реке Дунай."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1146" cy="1742" r="13" 
+                data-name="Проспект Славы" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2019" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Prospekt_Slavy_metro_station_01.jpg/400px-Prospekt_Slavy_metro_station_01.jpg"
+                data-info="Оформление посвящено героизму советских воинов. В переходе расположена экспозиция, посвященная пожарным."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1146" cy="1644" r="13" 
+                data-name="Международная" 
+                data-type="Колонно-стеновая глубокого заложения" 
+                data-year="2012" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Mezhdunarodnaya_metrostation_SPB.jpg/400px-Mezhdunarodnaya_metrostation_SPB.jpg"
+                data-info="Торцевую стену украшает мозаичное панно с изображением Атланта, держащего на плечах мир."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1146" cy="1542" r="13" 
+                data-name="Бухарестская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2012" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Bukharestskaya_metrostation_SPB.jpg/400px-Bukharestskaya_metrostation_SPB.jpg"
+                data-info="Названа по одноименной улице. В оформлении использованы смальтовые мозаики с растительным орнаментом."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1115" cy="1414" r="13" 
+                data-name="Волковская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2008" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Volkovskaya_metrostation_SPB.jpg/400px-Volkovskaya_metrostation_SPB.jpg"
+                data-info="Станция облицована фиолетовым мрамором. В торце расположено панно, изображающее историческую деревню Волково."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="1044" cy="1331" r="13" 
+                data-name="Обводный канал" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2010" 
+                data-arch="Б. А. Подольский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Spb_metro_Obvodny_kanal_platform.jpg/400px-Spb_metro_Obvodny_kanal_platform.jpg"
+                data-info="Оформлена в стиле стимпанк. На стенах размещены панорамные коллажи, показывающие Обводный канал в XIX веке."
+                data-color="var(--line-5)" />
+
+            <half-circle class="station" cx="934" cy="1202" r="22" side="right"
+                data-name="Звенигородская" 
+                data-type="Колонная глубокого заложения" 
+                data-year="2008" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Zvenigorodskaya_metrostation_SPb.jpg/400px-Zvenigorodskaya_metrostation_SPb.jpg"
+                data-info="Украшена огромным мозаичным панно, посвященным Семеновскому полку и Полтавской битве."
+                data-color="var(--line-5)" />
+
+            <third-circle class="station" cx="786" cy="1040" r="23" rotate="180" 
+                data-name="Садовая" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1991" 
+                data-arch="А. И. Прибульский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Sadovaya_metrostation_asv2018-05.jpg/400px-Sadovaya_metrostation_asv2018-05.jpg"
+                data-info="Находится в самом центре города. Единственная станция, где рельсы разделены гранитной стеной в центре зала."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="714" cy="948" r="13" 
+                data-name="Адмиралтейская" 
+                data-type="Колонно-стеновая глубокого заложения" 
+                data-year="2011" 
+                data-arch="А. С. Константинов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Admiralteyskaya_Station_StPetersburg.jpg/400px-Admiralteyskaya_Station_StPetersburg.jpg"
+                data-info="Самая глубокая станция в России (86 метров). Оформление посвящено становлению российского флота."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="545" cy="752" r="13" 
+                data-name="Спортивная" 
+                data-type="Двухъярусная пересадочная" 
+                data-year="1997" 
+                data-arch="А. С. Константинов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Sportivnaya_metrostation_asv2018-05.jpg/400px-Sportivnaya_metrostation_asv2018-05.jpg"
+                data-info="Уникальная двухэтажная станция. Нижний ярус предназначен для будущей Кольцевой линии."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="502" cy="701" r="13" 
+                data-name="Чкаловская" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1997" 
+                data-arch="А. С. Константинов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Chkalovskaya_metrostation_asv2018-05.jpg/400px-Chkalovskaya_metrostation_asv2018-05.jpg"
+                data-info="Дизайн вдохновлен авиацией: светильники напоминают пропеллеры, а указатели — приборы в кабине пилота."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="447" cy="589" r="13" 
+                data-name="Крестовский остров" 
+                data-type="Колонно-стеновая глубокого заложения" 
+                data-year="1999" 
+                data-arch="Е. М. Рапопорт"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Krestovsky_Ostrov_metrostation_asv2018-05.jpg/400px-Krestovsky_Ostrov_metrostation_asv2018-05.jpg"
+                data-info="В оформлении использовано много зеркального стекла. Находится рядом с Приморским парком Победы и стадионом."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="447" cy="372" r="13" 
+                data-name="Старая Деревня" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1999" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Spb_metro_Staraya_Derevnya_platform.jpg/400px-Spb_metro_Staraya_Derevnya_platform.jpg"
+                data-info="Зал освещен восемью огромными люстрами. Названа по историческому району города."
+                data-color="var(--line-5)" />
+
+            <circle class="station" cx="448" cy="290" r="13" 
+                data-name="Комендантский Проспект" 
+                data-type="Колонно-стеновая глубокого заложения" 
+                data-year="2005" 
+                data-arch="А. С. Константинов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Komendantsky_Prospekt_metrostation.jpg/400px-Komendantsky_Prospekt_metrostation.jpg"
+                data-info="Тема оформления — история российской авиации и первые полеты на Комендантском аэродроме."
+                data-color="var(--line-5)" />
+
+            <!-- Зелёная ветка -->
+
+            <circle class="station" cx="213" cy="454" r="13" 
+                data-name="Беговая" 
+                data-type="Колонная многопролетная мелкого заложения" 
+                data-year="2018" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Begovaya_metrostation_asv2018-07_1.jpg/400px-Begovaya_metrostation_asv2018-07_1.jpg"
+                data-info="Самая западная станция метро в России. Стены украшены декоративными панно на тему авиации."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="212" cy="577" r="13" 
+                data-name="Зенит" 
+                data-type="Колонная многопролетная мелкого заложения" 
+                data-year="2018" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Novokrestovskaya_metrostation_asv2018-05.jpg/400px-Novokrestovskaya_metrostation_asv2018-05.jpg"
+                data-info="Расположена прямо у стадиона «Газпром Арена». В 2020 году была переименована из «Новокрестовской»."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="213" cy="766" r="13" 
+                data-name="Приморская" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1979" 
+                data-arch="В. Н. Щербин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Primorskaya_metrostation_asv2018-05.jpg/400px-Primorskaya_metrostation_asv2018-05.jpg"
+                data-info="Ближайшая станция к Финскому заливу. Оформление посвящено теме моря и великих географических открытий."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="546" cy="911" r="13" 
+                data-name="Василеостровская" 
+                data-type="Станция закрытого типа" 
+                data-year="1967" 
+                data-arch="А. Я. Мачерет"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Vasileostrovskaya_metrostation_asv2018-05.jpg/400px-Vasileostrovskaya_metrostation_asv2018-05.jpg"
+                data-info="Одна из самых загруженных станций в Петербурге. Из-за отсутствия других станций в районе на неё ложится огромный пассажиропоток."
+                data-color="var(--line-3)" />
+
+            <half-circle class="station" cx="790" cy="912" r="22" side="right" 
+                data-name="Гостиный двор" 
+                data-type="Станция закрытого типа" 
+                data-year="1967" 
+                data-arch="С. Г. Майофис"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Gostiny_Dvor_station.jpg/400px-Gostiny_Dvor_station.jpg"
+                data-info="Расположена в самом центре Невского проспекта. Имеет пересадочный узел на станцию «Невский проспект» Синей линии."
+                data-color="var(--line-3)" />
+
+            <half-circle class="station" cx="1119" cy="912" r="22" side="left" 
+                data-name="Маяковская" 
+                data-type="Станция закрытого типа" 
+                data-year="1967" 
+                data-arch="Ю. В. Билинский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Mayakovskaya_metrostation_SPB.jpg/400px-Mayakovskaya_metrostation_SPB.jpg"
+                data-info="Стены центрального зала облицованы ярко-красной смальтой. Названа в честь поэта Владимира Маяковского."
+                data-color="var(--line-3)" />
+
+            <half-circle class="station" cx="1400" cy="1042" r="22" side="left" 
+                data-name="Площадь Александра Невского 1" 
+                data-type="Станция закрытого типа" 
+                data-year="1967" 
+                data-arch="Л. П. Лавров"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Ploshchad_Alexandra_Nevskogo_I_metrostation.jpg/400px-Ploshchad_Alexandra_Nevskogo_I_metrostation.jpg"
+                data-info="Названа по одноименной площади. На станции установлено мозаичное панно «Александр Невский»."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="1402" cy="1540" r="13" 
+                data-name="Елизаровская" 
+                data-type="Станция закрытого типа" 
+                data-year="1970" 
+                data-arch="А. К. Андреев"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Yelizarovskaya_metrostation_asv2018-05.jpg/400px-Yelizarovskaya_metrostation_asv2018-05.jpg"
+                data-info="Названа в честь революционера Марка Елизарова. Находится в историческом промышленном районе."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="1402" cy="1643" r="13" 
+                data-name="Ломоносовская" 
+                data-type="Станция закрытого типа" 
+                data-year="1970" 
+                data-arch="А. Я. Мачерет"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Lomonosovskaya_metrostation_asv2018-05.jpg/400px-Lomonosovskaya_metrostation_asv2018-05.jpg"
+                data-info="Расположена рядом с Императорским фарфоровым заводом (бывшим им. Ломоносова)."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="1402" cy="1742" r="13" 
+                data-name="Пролетарская" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1981" 
+                data-arch="Д. С. Гольдгор"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Proletarskaya_metrostation_asv2018-05.jpg/400px-Proletarskaya_metrostation_asv2018-05.jpg"
+                data-info="До открытия «Адмиралтейской» была самой глубокой станцией в городе. Имеет каскад из двух эскалаторов."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="1402" cy="1841" r="13" 
+                data-name="Обухово" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1981" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Obukhovo_metrostation_asv2018-05.jpg/400px-Obukhovo_metrostation_asv2018-05.jpg"
+                data-info="Совмещена с железнодорожной платформой Обухово, образуя единый транспортный узел."
+                data-color="var(--line-3)" />
+
+            <circle class="station" cx="1402" cy="1947" r="13" 
+                data-name="Рыбацкое" 
+                data-type="Наземная крытая" 
+                data-year="1984" 
+                data-arch="А. С. Гецкин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Rybatskoye_metro_station_pavilion.jpg/400px-Rybatskoye_metro_station_pavilion.jpg"
+                data-info="Южная конечная станция линии. Платформы разделены по направлениям, как на вокзалах."
+                data-color="var(--line-3)" />
+
+            <!-- Оранжевая ветка -->
+
+            <circle class="station" cx="504" cy="978" r="13" 
+                data-name="Горный институт" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2024 (план)" 
+                data-arch="А. М. Коновалов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Gorny_institut_station_Petersburg.jpg/400px-Gorny_institut_station_Petersburg.jpg"
+                data-info="Перспективная станция на Васильевском острове. Дизайн вдохновлен работами архитекторов эпохи классицизма."
+                data-color="var(--line-4)" />
+
+            <third-circle class="station" cx="789" cy="1042" r="23" rotate="-60" 
+                data-name="Спасская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2009" 
+                data-arch="Е. М. Рапопорт"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Spasskaya_metrostation_asv2018-05.jpg/400px-Spasskaya_metrostation_asv2018-05.jpg"
+                data-info="Названа в честь разрушенного храма Спаса-на-Сенной. В отделке использованы мозаичные панно на тему петербургского зодчества."
+                data-color="var(--line-4)" />
+
+            <half-circle class="station" cx="1123" cy="1041" r="22" side="right" 
+                data-name="Достоевская" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1991" 
+                data-arch="А. В. Жук"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Dostoevskaya_metrostation_asv2018-05.jpg/400px-Dostoevskaya_metrostation_asv2018-05.jpg"
+                data-info="Оформление передает атмосферу Петербурга Достоевского. Станция соединена переходом со станцией «Владимирская»."
+                data-color="var(--line-4)" />
+
+            <circle class="station" cx="1263" cy="1042" r="13" 
+                data-name="Лиговский Проспект" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1991" 
+                data-arch="Ю. В. Билинский"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Ligovsky_Prospekt_metrostation_asv2018-05.jpg/400px-Ligovsky_Prospekt_metrostation_asv2018-05.jpg"
+                data-info="В торце зала находится витраж с изображением Лиговского канала, который раньше протекал на месте проспекта."
+                data-color="var(--line-4)" />
+
+            <half-circle class="station" cx="1403" cy="1042" r="22" side="right" 
+                data-name="Площадь Александра Невского 2" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1985" 
+                data-arch="Г. Н. Булдаков"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Ploshchad_Alexandra_Nevskogo_II_metrostation.jpg/400px-Ploshchad_Alexandra_Nevskogo_II_metrostation.jpg"
+                data-info="В торце зала размещена большая мозаика «Ледовое побоище», изображающая дружину Александра Невского."
+                data-color="var(--line-4)" />
+
+            <circle class="station" cx="1605" cy="1102" r="13" 
+                data-name="Новочеркасская" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1985" 
+                data-arch="В. Г. Хильченко"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Novocherkasskaya_metrostation.jpg/400px-Novocherkasskaya_metrostation.jpg"
+                data-info="До 1992 года называлась «Красногвардейская». Имеет уникальный кольцевой подземный переход с 12 выходами."
+                data-color="var(--line-4)" />
+
+            <circle class="station" cx="1605" cy="1205" r="13" 
+                data-name="Ладожская" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1985" 
+                data-arch="В. Н. Щербин"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Ladozhskaya_metrostation_asv2018-05.jpg/400px-Ladozhskaya_metrostation_asv2018-05.jpg"
+                data-info="Расположена у Ладожского вокзала. Тема оформления посвящена «Дороге Жизни» через Ладожское озеро."
+                data-color="var(--line-4)" />
+
+            <circle class="station" cx="1605" cy="1421" r="13" 
+                data-name="Проспект Большевиков" 
+                data-type="Односводчатая глубокого заложения" 
+                data-year="1985" 
+                data-arch="А. М. Сариджанов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Prospekt_Bolshevikov_metrostation_asv2018-05.jpg/400px-Prospekt_Bolshevikov_metrostation_asv2018-05.jpg"
+                data-info="Ступенчатый потолок станции символизирует развевающееся знамя революции."
+                data-color="var(--line-4)" />
+
+            <circle class="station" cx="1605" cy="1544" r="13" 
+                data-name="Улица Дыбенко" 
+                data-type="Колонная глубокого заложения" 
+                data-year="1987" 
+                data-arch="О. Г. Кузнецов"
+                data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Ulitsa_Dybenko_metrostation.jpg/400px-Ulitsa_Dybenko_metrostation.jpg"
+                data-info="Панно в торце и на стенах выполнены из мозаики и камня. Конечная станция на востоке города."
+                data-color="var(--line-4)" />
+                        
+            <!-- ВЕЛИКАЯ И НЕПОВТОРИМАЯ Коричневая ветка -->
+
+            <circle class="station" cx="171" cy="1620" r="13" 
+                data-name="Юго-Западная" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2025" 
+                data-arch="П. В. Малафеев"
+                data-img="https://v-metropitera.ru/wp-content/uploads/2021/04/yugo-zapadnaya.jpg"
+                data-info="Также известна под проектным названием «Маршала Жукова». Станция призвана разгрузить Красносельский район, где раньше не было метро."
+                data-color="var(--line-6)" />
+
+            <half-circle class="station" cx="304" cy="1562" r="22" side="right" 
+                data-name="Путиловская" 
+                data-type="Пилонная глубокого заложения" 
+                data-year="2025" 
+                data-arch="Н. В. Ромашкин-Тиманов"
+                data-img="https://v-metropitera.ru/wp-content/uploads/2021/04/putilovskaya-1.jpg"
+                data-info="Пересадочный узел на станцию «Кировский завод» Красной линии. Дизайн посвящен истории Путиловского завода и индустриальной мощи города."
+                data-color="var(--line-6)" />
+        </svg>
+    </div>
+
+    <div id="tooltip">
+        <img id="st-img" src="" alt="фото">
+        <h3 id="st-name">Название</h3>
+        <p id="st-desc"></p>
+        <p id="st-info"></p> 
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
