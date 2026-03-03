@@ -76,59 +76,92 @@ body {
 /* ================================== */
 /* МЕДИА-ЗАПРОС ДЛЯ ТЕЛЕФОНОВ (< 992px) */
 /* ================================== */
+/* ================================== */
+/* МЕДИА-ЗАПРОС ДЛЯ ТЕЛЕФОНОВ (< 992px) */
+/* ================================== */
 @media (max-width: 992px) {
-    body { cursor: auto; overflow: auto !important; }
+    body { 
+        cursor: auto; 
+        overflow: auto !important; 
+    }
+    
     #custom-cursor { display: none !important; }
     
-    .container { width: 300vw; position: relative; }
+    .container { 
+        width: 300vw; /* Сохраняем зум карты */
+        position: relative; 
+    }
     
-    .legend { left: 10px; right: 10px; padding: 10px; }
+    .legend { 
+        left: 10px; right: 10px; padding: 10px; 
+    }
     .legend h2 { font-size: 16px; }
 
     /* ======================================= */
-    /* ЖЕЛЕЗОБЕТОННАЯ ШТОРКА (Без transform)   */
+    /* МОБИЛЬНОЕ ВСПЛЫВАЮЩЕЕ ОКНО (ПО ЦЕНТРУ)  */
     /* ======================================= */
     #tooltip {
-        display: block !important; 
+        display: none; /* Скрыто по умолчанию */
         position: fixed !important;
-        left: 0 !important; 
-        right: 0 !important; 
-        top: auto !important;
         
-        /* Прячем глубоко вниз */
-        bottom: -150% !important; 
+        /* Центрирование по экрану */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.9) !important;
         
-        width: 100vw !important; 
-        max-height: 80vh; 
-        overflow-y: auto;
+        /* Фиксированный размер карточки */
+        width: 90vw !important; /* 90% ширины экрана телефона */
+        max-width: 380px !important; /* Не шире 380px на планшетах */
+        height: auto;
+        max-height: 80vh; /* Чтобы не вылезло за высоту экрана */
+        overflow-y: auto; /* Скролл, если много текста */
         
-        border-left: none !important; 
-        border-top: 6px solid gold;
-        border-radius: 25px 25px 0 0; 
-        padding: 25px 20px;
-        background: #1a1a1a;
+        background: rgba(30, 30, 30, 0.98);
         z-index: 999999 !important;
+        
+        /* Декорации */
+        border-left: none !important; 
+        border-top: 6px solid gold; /* Цвет ветки */
+        border-radius: 12px; 
+        padding: 20px;
+        box-sizing: border-box;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         pointer-events: all !important;
         
-        /* Анимация выезда */
-        transition: bottom 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        /* Анимация появления */
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease !important;
     }
 
-    /* АКТИВНАЯ ШТОРКА (Поднимается наверх) */
+    /* АКТИВНОЕ ОКНО */
     #tooltip.active {
-        bottom: 0 !important; 
+        display: block !important;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) !important; /* Эффект "выныривания" */
     }
 
     #tooltip img { height: 180px; }
-    #st-name { font-size: 24px; padding-right: 40px; }
+    #st-name { font-size: 22px; padding-right: 40px; margin-top: 0; }
 
+    /* ======================================= */
+    /* КРЕСТИК ВНУТРИ ОКНА В ПРАВОМ ВЕРХНЕМ УГЛУ */
+    /* ======================================= */
     #close-btn {
-        display: flex !important; position: absolute;
-        top: -20px; right: 20px; width: 45px; height: 45px;
-        background: #fff; color: #000; border-radius: 50%;
-        border: 2px solid #000; font-size: 30px; font-weight: bold;
-        justify-content: center; align-items: center;
-        z-index: 100000; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        display: flex !important; 
+        position: absolute;
+        top: 15px; 
+        right: 15px; 
+        width: 35px; 
+        height: 35px;
+        background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+        color: #fff; /* Белый крестик */
+        border-radius: 50%;
+        border: none;
+        font-size: 24px; 
+        justify-content: center; 
+        align-items: center;
+        z-index: 100000; 
         cursor: pointer;
+        line-height: 1;
     }
 }

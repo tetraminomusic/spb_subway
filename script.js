@@ -50,7 +50,8 @@ function openTooltip(station) {
         tooltip.removeAttribute('style'); 
         tooltip.style.borderTopColor = color;
         
-        // ВЫДВИГАЕМ ШТОРКУ
+        // Включаем блок и через 10мс запускаем анимацию
+        tooltip.style.display = 'block';
         setTimeout(() => {
             tooltip.classList.add('active');
         }, 10);
@@ -82,7 +83,17 @@ document.addEventListener('click', function(e) {
 if (closeBtn) {
     closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        
+        // Запускаем анимацию исчезновения
         tooltip.classList.remove('active');
+        
+        // Ждем окончания анимации (0.3с) и полностью прячем блок
+        setTimeout(() => { 
+            tooltip.style.display = 'none'; 
+        }, 300);
+        
+        // Убираем желтую подсветку со станции
         document.querySelectorAll('.station').forEach(s => s.classList.remove('touched'));
     });
 }
