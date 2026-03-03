@@ -3,135 +3,127 @@ const tooltip = document.getElementById('tooltip');
 const stName = document.getElementById('st-name');
 const stDesc = document.getElementById('st-desc');
 const stImg = document.getElementById('st-img');
-const svgMap = document.getElementById('metro-map');
 const stInfo = document.getElementById('st-info');
+const closeBtn = document.getElementById('close-btn');
 
+// --- 1. ПРЕВРАЩАЕМ ТЕГИ ---
 function initCustomTags() {
-    // 1. Обработка ПОЛУКРУГОВ
-    const halfCircles = document.querySelectorAll('half-circle');
-    halfCircles.forEach(el => {
-        const cx = parseFloat(el.getAttribute('cx'));
-        const cy = parseFloat(el.getAttribute('cy'));
-        const r = parseFloat(el.getAttribute('r'));
-        const side = el.getAttribute('side');
-        let d = (side === 'left') ? `M ${cx},${cy + r} A ${r},${r} 0 0,1 ${cx},${cy - r} Z` :
-                (side === 'right') ? `M ${cx},${cy - r} A ${r},${r} 0 0,1 ${cx},${cy + r} Z` :
-                (side === 'top') ? `M ${cx - r},${cy} A ${r},${r} 0 0,1 ${cx + r},${cy} Z` :
-                `M ${cx + r},${cy} A ${r},${r} 0 0,1 ${cx - r},${cy} Z`;
-        replaceElement(el, d);
+    document.querySelectorAll('half-circle').forEach(el => {
+        const cx = parseFloat(el.getAttribute('cx')), cy = parseFloat(el.getAttribute('cy')), r = parseFloat(el.getAttribute('r')), side = el.getAttribute('side');
+        let d = (side === 'left') ? `M ${cx},${cy+r} A ${r},${r} 0 0,1 ${cx},${cy-r} Z` : `M ${cx},${cy-r} A ${r},${r} 0 0,1 ${cx},${cy+r} Z`;
+        replaceEl(el, d);
     });
 
-    // 2. Обработка ТРЕТЕЙ КРУГА (120 градусов)
-    const thirdCircles = document.querySelectorAll('third-circle');
-    thirdCircles.forEach(el => {
-        const cx = parseFloat(el.getAttribute('cx'));
-        const cy = parseFloat(el.getAttribute('cy'));
-        const r = parseFloat(el.getAttribute('r'));
-        const startDeg = parseFloat(el.getAttribute('rotate')) || 0;
-        
-        // Математика сектора
-        const endDeg = startDeg + 120;
-        const x1 = cx + r * Math.cos(Math.PI * startDeg / 180);
-        const y1 = cy + r * Math.sin(Math.PI * startDeg / 180);
-        const x2 = cx + r * Math.cos(Math.PI * endDeg / 180);
-        const y2 = cy + r * Math.sin(Math.PI * endDeg / 180);
-
-        const d = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`;
-        replaceElement(el, d);
+    document.querySelectorAll('third-circle').forEach(el => {
+        const cx = parseFloat(el.getAttribute('cx')), cy = parseFloat(el.getAttribute('cy')), r = parseFloat(el.getAttribute('r')), start = parseFloat(el.getAttribute('rotate')) || 0;
+        const end = start + 120, x1 = cx + r * Math.cos(Math.PI * start / 180), y1 = cy + r * Math.sin(Math.PI * start / 180), x2 = cx + r * Math.cos(Math.PI * end / 180), y2 = cy + r * Math.sin(Math.PI * end / 180);
+        replaceEl(el, `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`);
     });
 }
 
-// Вспомогательная функция для замены тега на путь
-function replaceElement(el, d) {
+function replaceEl(el, d) {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     Array.from(el.attributes).forEach(attr => path.setAttribute(attr.name, attr.value));
     path.setAttribute('d', d);
     el.parentNode.replaceChild(path, el);
 }
 
-// Запуск
 initCustomTags();
 
-// 2. НАЗНАЧАЕМ СОБЫТИЯ
-const stations = document.querySelectorAll('.station');
+// --- 2. ФУНКЦИЯ ПОКАЗА ИНФОРМАЦИИ ---
+function openTooltip(station) {
+    stName.innerText = station.getAttribute('data-name') || "Неизвестная станция";
+    stDesc.innerHTML = `<strong>Тип:</strong> ${station.getAttribute('data-type')}<br><strong>Открыта:</strong> ${station.getAttribute('data-year')} г.<br><strong>Архитектор:</strong> ${station.getAttribute('data-arch')}`;
+    
+    const info = station.getAttribute('data-info');
+    stInfo.innerText = info || "";
+    stInfo.style.display = info ? 'block' : 'none';
 
-stations.forEach(station => {
-    station.addEventListener('mouseenter', (e) => {
-        e.target.parentNode.appendChild(e.target);
+    const img = station.getAttribute('data-img');
+    stImg.src = img || "";
+    stImg.style.display = img ? 'block' : 'none';
 
-        const name = station.getAttribute('data-name');
-        const type = station.getAttribute('data-type');
-        const year = station.getAttribute('data-year');
-        const arch = station.getAttribute('data-arch');
-        const img = station.getAttribute('data-img');
-        const color = station.getAttribute('data-color') || '#888';
-        const infoText = station.getAttribute('data-info') || ""; 
-
-        stName.innerText = name;
-        stDesc.innerHTML = `<strong>Тип:</strong> ${type}<br><strong>Открыта:</strong> ${year} г.<br><strong>Архитектор:</strong> ${arch}`;
+    const color = station.getAttribute('data-color') || '#888';
+    
+    if (window.innerWidth <= 992) {
+        // Убиваем инлайн-стили от ПК
+        tooltip.removeAttribute('style'); 
+        tooltip.style.borderTopColor = color;
         
-        if (infoText !== "") {
-            stInfo.innerText = infoText;
-            stInfo.style.display = 'block'; // Показываем, если текст есть
-        } else {
-            stInfo.style.display = 'none'; // Прячем, если текста нет
-        }
-
-        if (img) {
-            stImg.src = img;
-            stImg.style.display = 'block';
-        } else {
-            stImg.style.display = 'none';
-        }
-
+        // ВЫДВИГАЕМ ШТОРКУ
+        setTimeout(() => {
+            tooltip.classList.add('active');
+        }, 10);
+    } else {
         tooltip.style.borderLeftColor = color;
         tooltip.style.display = 'block';
+    }
+}
+
+// --- 3. ГЛОБАЛЬНЫЙ ПЕРЕХВАТ КЛИКОВ (САМОЕ ВАЖНОЕ) ---
+// Ловим любой клик на странице
+document.addEventListener('click', function(e) {
+    // Ищем, не кликнули ли мы случайно по станции или внутри неё
+    const station = e.target.closest('.station');
+    
+    if (station && window.innerWidth <= 992) {
+        e.preventDefault(); // Останавливаем стандартное поведение браузера
         
-        cursor.style.transform = 'translate(-50%, -50%) scale(2)';
-        cursor.style.background = 'rgba(255, 255, 0, 0.3)';
-        cursor.style.borderColor = 'transparent';
-    });
-
-    station.addEventListener('mouseleave', () => {
-        tooltip.style.display = 'none';
-        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        cursor.style.background = 'rgba(0, 0, 0, 0.1)';
-        cursor.style.borderColor = '#333';
-    });
-});
-
-// Движение курсора
-document.addEventListener('mousemove', (e) => {
-    // 1. Двигаем курсор
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-
-    if (tooltip.style.display === 'block') {
-        // 2. Получаем размеры карточки (ширину и высоту)
-        let tooltipWidth = tooltip.offsetWidth;
-        let tooltipHeight = tooltip.offsetHeight;
-
-        // 3. Базовое положение (чуть правее и ниже курсора)
-        let x = e.clientX + 20;
-        let y = e.clientY + 20;
-
-        // 4. ПРОВЕРКА ПРАВОГО КРАЯ:
-        // Если положение X + ширина карточки больше ширины окна браузера
-        if (x + tooltipWidth > window.innerWidth) {
-            x = e.clientX - tooltipWidth - 20; // Окно прыгает влево от курсора
-        }
-
-        // 5. ПРОВЕРКА НИЖНЕГО КРАЯ (актуально для Купчино):
-        // Если положение Y + высота карточки больше высоты окна браузера
-        if (y + tooltipHeight > window.innerHeight) {
-            y = e.clientY - tooltipHeight - 20; // Окно прыгает выше курсора
-        }
-
-        // 6. Применяем итоговые координаты
-        tooltip.style.left = x + 'px';
-        tooltip.style.top = y + 'px';
+        // Красим нажатую станцию
+        document.querySelectorAll('.station').forEach(s => s.classList.remove('touched'));
+        station.classList.add('touched');
+        
+        // Показываем данные
+        openTooltip(station);
     }
 });
 
-// Помощник координат
-svgMap.addEventListe
+// КНОПКА ЗАКРЫТИЯ НА ТЕЛЕФОНЕ
+if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        tooltip.classList.remove('active');
+        document.querySelectorAll('.station').forEach(s => s.classList.remove('touched'));
+    });
+}
+
+// --- 4. СОБЫТИЯ ДЛЯ ПК (Наведение мыши) ---
+const stations = document.querySelectorAll('.station');
+stations.forEach(station => {
+    station.addEventListener('mouseenter', function() {
+        if (window.innerWidth > 992) {
+            this.parentNode.appendChild(this);
+            openTooltip(this);
+            cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+        }
+    });
+
+    station.addEventListener('mouseleave', function() {
+        if (window.innerWidth > 992) {
+            tooltip.style.display = 'none';
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        }
+    });
+});
+
+// Движение курсора (только ПК)
+document.addEventListener('mousemove', (e) => {
+    if (window.innerWidth > 992) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+
+        if (tooltip.style.display === 'block') {
+            let w = tooltip.offsetWidth, h = tooltip.offsetHeight;
+            let x = e.clientX + 20, y = e.clientY + 20;
+
+            if (x + w > window.innerWidth) x = e.clientX - w - 20;
+            if (y + h > window.innerHeight) y = e.clientY - h - 20;
+
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+    }
+});
+
+// Заглушка для фото
+stImg.onerror = function() { this.style.display = 'none'; };
