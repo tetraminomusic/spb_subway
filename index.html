@@ -10,9 +10,42 @@
 
     <div id="custom-cursor"></div>
 
-    <div class="legend">
+    <div class="side-panel">
         <h2>Метрополитен СПб</h2>
-        <p>Наведите на станцию для информации.</p>
+        
+        <!-- Поиск теперь внутри панели -->
+        <div class="search-section">
+            <div class="search-input-group">
+                <input type="text" id="station-search" placeholder="Найти станцию..." autocomplete="off">
+                <button id="search-clear">×</button>
+            </div>
+            <div id="search-results" class="search-results-list"></div>
+        </div>
+
+        <p class="panel-hint">Выберите линию для подсветки:</p>
+        
+        <div class="line-selector">
+            <div class="line-item" data-line-filter="var(--line-1)">
+                <span class="line-dot" style="background: var(--line-1);"></span> Линия 1
+            </div>
+            <div class="line-item" data-line-filter="var(--line-2)">
+                <span class="line-dot" style="background: var(--line-2);"></span> Линия 2
+            </div>
+            <div class="line-item" data-line-filter="var(--line-3)">
+                <span class="line-dot" style="background: var(--line-3);"></span> Линия 3
+            </div>
+            <div class="line-item" data-line-filter="var(--line-4)">
+                <span class="line-dot" style="background: var(--line-4);"></span> Линия 4
+            </div>
+            <div class="line-item" data-line-filter="var(--line-5)">
+                <span class="line-dot" style="background: var(--line-5);"></span> Линия 5
+            </div>
+            <div class="line-item" data-line-filter="var(--line-6)">
+                <span class="line-dot" style="background: var(--line-6);"></span> Линия 6
+            </div>
+        </div>
+        
+        <button id="reset-filter">Сбросить фильтр</button>
     </div>
 
     <div class="container">
@@ -28,6 +61,7 @@
                 data-year="1972" 
                 data-arch="К. Н. Афонская"
                 data-img="img/kupchino.jpg"
+                data-landmarks="ТЦ Балканский:2 мин, Витебская Ж/Д ветка:1 мин"
                 data-info="Первая в России станция, объединенная с железнодорожным вокзалом. Крупнейший транспортный узел на юге города."
                 data-color="var(--line-2)" />
 
@@ -37,6 +71,7 @@
                 data-year="1972" 
                 data-arch="Ю. В. Билинский"
                 data-img="img/zvyozdnaya.jpg"
+                data-landmarks="Пулковский парк:12 мин"
                 data-info="Названа по одноименной улице. В оформлении использована тема освоения космоса."
                 data-color="var(--line-2)" />
 
@@ -46,6 +81,7 @@
                 data-year="1969" 
                 data-arch="С. Г. Майофис"
                 data-img="img/moskovskaya.jpg"
+                data-landmarks="Поющие фонтаны:3 мин, Дом Советов:5 мин, Чесменская церковь:12 мин"
                 data-info="Имеет самый длинный в мире подземный переход под Московским проспектом. Отсюда идут автобусы в аэропорт Пулково."
                 data-color="var(--line-2)" />
 
@@ -55,6 +91,7 @@
                 data-year="1961" 
                 data-arch="А. К. Андреев"
                 data-img="img/park_pobedu.jpg"
+                data-landmarks="Парк Победы:1 мин, СКК:10 мин"
                 data-info="Первая в мире станция типа «горизонтальный лифт» (с автоматическими дверями на платформе)."
                 data-color="var(--line-2)" />
 
@@ -64,6 +101,7 @@
                 data-year="1961" 
                 data-arch="С. Г. Майофис"
                 data-img="img/electrosila.jpg"
+                data-landmarks="Завод Электросила:1 мин, ТРК Питер Радуга:20 мин"
                 data-info="Названа по расположенному рядом электромашиностроительному заводу «Электросила»."
                 data-color="var(--line-2)" />
 
@@ -73,6 +111,7 @@
                 data-year="1961" 
                 data-arch="В. А. Петров"
                 data-img="img/moskovskie_vorota.jpg"
+                data-landmarks="Триумфальные ворота:1 мин"
                 data-info="В торце центрального зала установлено скульптурное изображение элементов Московских Триумфальных ворот."
                 data-color="var(--line-2)" />
 
@@ -82,6 +121,7 @@
                 data-year="1961" 
                 data-arch="Б. Н. Журавлёв"
                 data-img="img/frunzenskaya.jpg"
+                data-landmarks="Новодевичий монастырь:12 мин"
                 data-info="Названа в честь революционера и военачальника Михаила Фрунзе. Сейчас находится на масштабной реконструкции."
                 data-color="var(--line-2)" />
 
@@ -91,6 +131,7 @@
                 data-year="1961" 
                 data-arch="А. И. Прибульский" 
                 data-img="img/tehnologichesky_insitut2.jpg"
+                data-landmarks="Троицкий собор:10 мин, БГТУ Военмех:3 мин"
                 data-info="Уникальный кросс-платформенный узел. С этой платформы поезда уходят в сторону Парнаса и Девяткино."
                 data-color="var(--line-2)" />
 
@@ -100,6 +141,7 @@
                 data-year="1963"
                 data-arch="А. И. Прибульский"
                 data-img="img/sennya_ploshad.jpg"
+                data-landmarks="Юсуповский сад:10 мин, Канал Грибоедова:2 мин"
                 data-info="До 1992 года называлась «Площадь Мира». Центральный узел пересадки на Линии 4 и 5."
                 data-color="var(--line-2)" />
 
@@ -109,8 +151,10 @@
                 data-year="1963" 
                 data-arch="С. Г. Майофис"
                 data-img="img/nevskiy_prospect.jpg"
+                data-landmarks="Казанский собор:1 мин, Спас на Крови:7 мин, Дом Зингера:2 мин, Эрмитаж:12 мин"
                 data-info="Самая оживленная станция. Имеет пересадочный узел на станцию «Гостиный двор» Зеленой линии."
-                data-color="var(--line-2)" />
+                data-color="var(--line-2)"
+                data-landmarks="Казанский собор, Спас на Крови, Дом Зингера" />
 
             <circle class="station" cx="789" cy="754" r="13" 
                 data-name="Горьковская" 
@@ -118,6 +162,7 @@
                 data-year="1963" 
                 data-arch="С. Г. Майофис"
                 data-img="img/gorkovskaya.jpg"
+                data-landmarks="Петропавловская крепость:7 мин, Зоопарк:5 мин, Планетарий:6 мин, Мечеть:3 мин"
                 data-info="Названа в честь писателя Максима Горького. Наземный павильон станции напоминает летающую тарелку."
                 data-color="var(--line-2)" />
 
@@ -127,6 +172,7 @@
                 data-year="1963" 
                 data-arch="А. К. Андреев"
                 data-img="img/petrogradskaya.jpg"
+                data-landmarks="Ленфильм:10 мин, Театр им. Миронова:2 мин"
                 data-info="Расположена в историческом районе на Петроградской стороне. Подземный зал украшен панно из керамики."
                 data-color="var(--line-2)" />
 
@@ -136,6 +182,7 @@
                 data-year="1982" 
                 data-arch="Г. Н. Булдаков"
                 data-img="img/сhyornaya_rechka.jpg"
+                data-landmarks="Место дуэли Пушкина:7 мин, Строгановский парк:5 мин"
                 data-info="Расположена недалеко от места последней дуэли А. С. Пушкина, чему посвящена скульптура в торце зала."
                 data-color="var(--line-2)" />
 
@@ -145,6 +192,7 @@
                 data-year="1982" 
                 data-arch="А. С. Гецкин"
                 data-img="img/pionerskaya.jpg"
+                data-landmarks="Место дуэли Пушкина:10 мин, Удельный парк:5 мин"
                 data-info="Станция была открыта к 60-летию Всесоюзной пионерской организации."
                 data-color="var(--line-2)" />
 
@@ -154,6 +202,7 @@
                 data-year="1982" 
                 data-arch="А. С. Гецкин"
                 data-img="img/udelnaya.jpg"
+                data-landmarks="Блошиный рынок:3 мин, База ФК Зенит:15 мин"
                 data-info="Имеет выход к железнодорожной платформе Удельная. В оформлении использована тема авиации."
                 data-color="var(--line-2)" />
 
@@ -163,6 +212,7 @@
                 data-year="1988" 
                 data-arch="Г. Н. Булдаков"
                 data-img="img/ozerki.jpg"
+                data-landmarks="Суздальские озёра:5 мин"
                 data-info="Оформлена мозаиками, изображающими природу русского севера. Названа из-за близости к Суздальским озёрам."
                 data-color="var(--line-2)" />
 
@@ -172,6 +222,7 @@
                 data-year="1988" 
                 data-arch="Ю. В. Билинский"
                 data-img="img/prospect_prosvesheina.jpg"
+                data-landmarks="Гранд Каньон:10 мин, Сад Ивана Фомина:12 мин"
                 data-info="Интерьер украшен светильниками в виде факелов. Станция обслуживает огромный жилой район на севере города."
                 data-color="var(--line-2)" />
 
@@ -181,6 +232,7 @@
                 data-year="2006" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/parnas.jpg"
+                data-landmarks="Шуваловский парк:15 мин"
                 data-info="Самая северная станция метро в России. Оформлена витражами на тему древнегреческих мифов."
                 data-color="var(--line-2)" />
 
@@ -192,6 +244,7 @@
                 data-year="1977" 
                 data-arch="В. Г. Хильченко"
                 data-img="img/prospect_veteranov.jpg"
+                data-landmarks="Парк Александрино:12 мин"
                 data-info="Самая загруженная станция в России после московских. Является южной конечной точкой первой линии."
                 data-color="var(--line-1)" />
 
@@ -201,6 +254,7 @@
                 data-year="1977" 
                 data-arch="А. С. Гецкин"
                 data-img="img/leninsky_prospect.jpg"
+                data-landmarks="ТЦ Французский бульвар:3 мин"
                 data-info="Станция построена без наземного павильона, входы совмещены с подземными переходами."
                 data-color="var(--line-1)" />
 
@@ -210,6 +264,7 @@
                 data-year="1955" 
                 data-arch="Е. А. Левинсон"
                 data-img="img/avtovo.jpg"
+                data-landmarks="Цирк в Автово:5 мин, Памятник Танк Победитель:10 мин"
                 data-info="Входит в список самых красивых станций мира. Знаменита своими стеклянными колоннами и роскошными люстрами."
                 data-color="var(--line-1)" />
 
@@ -219,6 +274,7 @@
                 data-year="1955" 
                 data-arch="А. К. Андреев"
                 data-img="img/kirovsky_zavod.jpg"
+                data-landmarks="ДК им. Газа:2 мин, Музей Кировского завода:5 мин"
                 data-info="Украшена 31 барельефом, посвященным развитию тяжелой индустрии СССР. Имеет пересадку на станцию Путиловская."
                 data-color="var(--line-1)" />
 
@@ -228,6 +284,7 @@
                 data-year="1955" 
                 data-arch="А. В. Васильев"
                 data-img="img/narvskaya.jpg"
+                data-landmarks="Нарвские ворота:1 мин, Парк Екатерингоф:10 мин"
                 data-info="Павильон станции напоминает античный храм. Тематика оформления — трудовая доблесть советского народа."
                 data-color="var(--line-1)" />
 
@@ -237,6 +294,7 @@
                 data-year="1955" 
                 data-arch="М. К. Бенуа"
                 data-img="img/baltiyskaya.jpg"
+                data-landmarks="Балтийский вокзал:1 мин, Музей железных дорог РФ:5 мин"
                 data-info="Расположена у Балтийского вокзала. Голубоватый мрамор отделки символизирует морскую стихию."
                 data-color="var(--line-1)" />
 
@@ -246,6 +304,7 @@
                 data-year="1955" 
                 data-arch="А. М. Соколов"
                 data-img="img/tehnologichesky_institut1.jpg"
+                data-landmarks="Троицкий собор:10 мин, Фонтанка:12 мин"
                 data-info="Первый в СССР кросс-платформенный узел. Зал украшен барельефами выдающихся отечественных ученых."
                 data-color="var(--line-1)" />
 
@@ -255,6 +314,7 @@
                 data-year="1956" 
                 data-arch="Л. М. Поляков"
                 data-img="img/pushkinskaya.jpg"
+                data-landmarks="Витебский вокзал:1 мин, ТЮЗ им. Брянцева:5 мин, Океанариум:10 мин"
                 data-info="Считается одной из самых изящных станций. В торце зала установлен памятник А. С. Пушкину на фоне Царскосельского парка."
                 data-color="var(--line-1)" />
 
@@ -264,6 +324,7 @@
                 data-year="1955" 
                 data-arch="Г. И. Александров"
                 data-img="img/vladimirskaya.jpg"
+                data-landmarks="Музей Достоевского:5 мин, Владимирский собор:2 мин, Пять углов:7 мин"
                 data-info="Названа по Владимирской площади. В 1991 году была соединена переходом со станцией Достоевская."
                 data-color="var(--line-1)" />
 
@@ -273,6 +334,7 @@
                 data-year="1955" 
                 data-arch="И. И. Фомин"
                 data-img="img/ploshad_vosstaniya.jpg"
+                data-landmarks="Московский вокзал:1 мин, ТЦ Галерея:2 мин, Невский проспект:1 мин"
                 data-info="Центральный узел города. Оформлена в стиле сталинского ампира с барельефами на тему Октябрьской революции."
                 data-color="var(--line-1)" />
 
@@ -282,6 +344,7 @@
                 data-year="1958" 
                 data-arch="А. В. Жук"
                 data-img="img/chernishevskaya.jpg"
+                data-landmarks="Таврический сад:7 мин, Спасо-Преображенский собор:10 мин, Оранжерея:10 мин"
                 data-info="Названа в честь Николая Чернышевского. В данный момент открыта после масштабной реконструкции эскалаторного зала."
                 data-color="var(--line-1)" />
 
@@ -291,6 +354,7 @@
                 data-year="1958" 
                 data-arch="А. К. Андреев"
                 data-img="img/ploshad_lenina.jpg"
+                data-landmarks="Финляндский вокзал:1 мин, Поющие фонтаны:3 мин, Крейсер Аврора:15 мин"
                 data-info="Один из выходов ведет прямо в здание Финляндского вокзала. Украшена панно, посвященным приезду Ленина в Петроград."
                 data-color="var(--line-1)" />
 
@@ -300,6 +364,7 @@
                 data-year="1975" 
                 data-arch="А. С. Гецкин"
                 data-img="img/vuborskaya.jpg"
+                data-landmarks="Сад Александра Матросова:8 мин"
                 data-info="Названа по историческому району города. Через неё проходит самый длинный пешеходный переход в метро СПб."
                 data-color="var(--line-1)" />
 
@@ -309,6 +374,7 @@
                 data-year="1975" 
                 data-arch="А. И. Прибульский"
                 data-img="img/lesnaya.jpg"
+                data-landmarks="ТЦ Европолис:7 мин, Сад Александра Матросова:5 мин"
                 data-info="С 1995 по 2004 год была конечной для северного участка из-за знаменитого Размыва — затопления тоннелей."
                 data-color="var(--line-1)" />
 
@@ -318,6 +384,7 @@
                 data-year="1975" 
                 data-arch="Е. М. Рапопорт"
                 data-img="img/ploshad_muzhesvta.jpg"
+                data-landmarks="Пискарёвское мемориальное кладбище:20 мин"
                 data-info="Посвящена героизму ленинградцев в годы блокады. Находится рядом с Пискарёвским мемориальным кладбищем."
                 data-color="var(--line-1)" />
 
@@ -327,6 +394,7 @@
                 data-year="1975" 
                 data-arch="С. Б. Сперанский"
                 data-img="img/politeshnicheskaya.jpg"
+                data-landmarks="Политехнический университет:1 мин, Храм Покрова Пресвятой Богородицы:3 мин"
                 data-info="Станция без колонн (односвод). Названа в честь расположенного рядом Политехнического университета."
                 data-color="var(--line-1)" />
 
@@ -336,6 +404,7 @@
                 data-year="1975" 
                 data-arch="А. С. Гецкин"
                 data-img="img/akademicheskaya.jpeg"
+                data-landmarks="Пискарёвский парк:12 мин"
                 data-info="Оформлена нержавеющей сталью. Названа так из-за обилия научно-исследовательских институтов в округе."
                 data-color="var(--line-1)" />
 
@@ -346,6 +415,7 @@
                 data-arch="А. С. Гецкин"
                 data-img="img/grazhdanskiy prospects.jpg"
                 data-info="В торце зала находится бронзовый герб СССР диаметром более 3 метров."
+                data-landmarks="Муринский парк:10 мин"
                 data-color="var(--line-1)" />
 
             <circle class="station" cx="1121" cy="73" r="13" 
@@ -355,6 +425,7 @@
                 data-arch="А. С. Гецкин"
                 data-img="img/devyatkino.jpg"
                 data-info="Единственная станция петербургского метро, находящаяся на территории Ленинградской области."
+                data-landmarks="Ж/Д Вокзал:1 мин, Автовокзал Северный:2 мин"
                 data-color="var(--line-1)" />
 
             <!-- Фиолетовая ветка -->
@@ -365,6 +436,7 @@
                 data-year="2019" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/shushary.jpg"
+                data-landmarks="Завод Toyota:10 мин, Южная ТЭЦ:15 мин"
                 data-info="Конечная станция южного радиуса. Расположена в промышленной зоне рядом с автомобильными заводами."
                 data-color="var(--line-5)" />
 
@@ -374,6 +446,7 @@
                 data-year="2019" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/dunyaskaya.jpg"
+                data-landmarks="Фёдоровский сквер:3 мин"
                 data-info="Станция украшена витражами с изображениями городов, расположенных на реке Дунай."
                 data-color="var(--line-5)" />
 
@@ -383,6 +456,7 @@
                 data-year="2019" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/prospect_slavi.jpg"
+                data-landmarks="Парк Интернационалистов:5 мин, Парк Героев-Пожарных:5 мин"
                 data-info="Оформление посвящено героизму советских воинов. В переходе расположена экспозиция, посвященная пожарным."
                 data-color="var(--line-5)" />
 
@@ -392,6 +466,7 @@
                 data-year="2012" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/mezhdunarodnaya.jpg"
+                data-landmarks="ТЦ Рио:7 мин, Яблоневый сад:15 мин"
                 data-info="Торцевую стену украшает мозаичное панно с изображением Атланта, держащего на плечах мир."
                 data-color="var(--line-5)" />
 
@@ -401,6 +476,7 @@
                 data-year="2012" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/buharestkaya.jpg"
+                data-landmarks="Университет Профсоюзов:5 мин, ТРК Континент:2 мин"
                 data-info="Названа по одноименной улице. В оформлении использованы смальтовые мозаики с растительным орнаментом."
                 data-color="var(--line-5)" />
 
@@ -410,6 +486,7 @@
                 data-year="2008" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/volkovskaya.jpg"
+                data-landmarks="Литераторские мостки:10 мин"
                 data-info="Станция облицована фиолетовым мрамором. В торце расположено панно, изображающее историческую деревню Волково."
                 data-color="var(--line-5)" />
 
@@ -419,6 +496,7 @@
                 data-year="2010" 
                 data-arch="Б. А. Подольский"
                 data-img="img/obvodniy_kanal.jpg"
+                data-landmarks="Креативное пространство Ткачи:5 мин"
                 data-info="Оформлена в стиле стимпанк. На стенах размещены панорамные коллажи, показывающие Обводный канал в XIX веке."
                 data-color="var(--line-5)" />
 
@@ -428,6 +506,7 @@
                 data-year="2008" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/znegorodskaya.jpg"
+                data-landmarks="Океанариум:7 мин, Пионерская площадь:2 мин"
                 data-info="Украшена огромным мозаичным панно, посвященным Семеновскому полку и Полтавской битве."
                 data-color="var(--line-5)" />
 
@@ -437,6 +516,7 @@
                 data-year="1991" 
                 data-arch="А. И. Прибульский"
                 data-img="img/sadovaya.jpg"
+                data-landmarks="Юсуповский сад:5 мин, Мариинский театр:15 мин"
                 data-info="Находится в самом центре города. Единственная станция, где рельсы разделены гранитной стеной в центре зала."
                 data-color="var(--line-5)" />
 
@@ -446,8 +526,10 @@
                 data-year="2011" 
                 data-arch="А. С. Константинов"
                 data-img="img/admiralteyskaya.jpg"
+                data-landmarks="Эрмитаж:5 мин, Исаакиевский собор:7 мин, Медный всадник:10 мин"
                 data-info="Самая глубокая станция в России (86 метров). Оформление посвящено становлению российского флота."
-                data-color="var(--line-5)" />
+                data-color="var(--line-5)"
+                data-landmarks="Эрмитаж, Медный всадник, Исаакиевский собор" />
 
             <circle class="station" cx="545" cy="752" r="13" 
                 data-name="Спортивная" 
@@ -455,6 +537,7 @@
                 data-year="1997" 
                 data-arch="А. С. Константинов"
                 data-img="img/sportivnaya.jpg"
+                data-landmarks="Стадион Петровский:2 мин, Юбилейный:1 мин, Князь-Владимирский собор:5 мин"
                 data-info="Уникальная двухэтажная станция. Нижний ярус предназначен для будущей Кольцевой линии."
                 data-color="var(--line-5)" />
 
@@ -473,6 +556,7 @@
                 data-year="1999" 
                 data-arch="Е. М. Рапопорт"
                 data-img="img/krestovskiy_ostrov.jpg"
+                data-landmarks="Диво-Остров:3 мин, Эколого-биологический центр:5 мин"
                 data-info="В оформлении использовано много зеркального стекла. Находится рядом с Приморским парком Победы и стадионом."
                 data-color="var(--line-5)" />
 
@@ -482,6 +566,7 @@
                 data-year="1999" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/staraya_derevnya.jpg"
+                data-landmarks="Буддийский дацан:5 мин, ЦПКиО им. Кирова:7 мин"
                 data-info="Зал освещен восемью огромными люстрами. Названа по историческому району города."
                 data-color="var(--line-5)" />
 
@@ -502,6 +587,7 @@
                 data-year="2018" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/begovaya.jpg"
+                data-landmarks="Парк 300-летия:5 мин, Лахта Центр:15 мин"
                 data-info="Самая западная станция метро в России. Стены украшены декоративными панно на тему авиации."
                 data-color="var(--line-3)" />
 
@@ -511,6 +597,7 @@
                 data-year="2018" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/zenit.jpg"
+                data-landmarks="Газпром Арена:2 мин, Сибур Арена:5 мин"
                 data-info="Расположена прямо у стадиона «Газпром Арена». В 2020 году была переименована из «Новокрестовской»."
                 data-color="var(--line-3)" />
 
@@ -520,6 +607,7 @@
                 data-year="1979" 
                 data-arch="В. Н. Щербин"
                 data-img="img/primorskaya.jpg"
+                data-landmarks="Финский залив:15 мин, Кладбище Декабристов:10 мин"
                 data-info="Ближайшая станция к Финскому заливу. Оформление посвящено теме моря и великих географических открытий."
                 data-color="var(--line-3)" />
 
@@ -529,6 +617,7 @@
                 data-year="1967" 
                 data-arch="А. Я. Мачерет"
                 data-img="img/vasileostroskaya.jpg"
+                data-landmarks="Стрелка В.О.:20 мин, Академия художеств:12 мин, Андреевский собор:3 мин"
                 data-info="Одна из самых загруженных станций в Петербурге. Из-за отсутствия других станций в районе на неё ложится огромный пассажиропоток."
                 data-color="var(--line-3)" />
 
@@ -538,6 +627,7 @@
                 data-year="1967" 
                 data-arch="С. Г. Майофис"
                 data-img="img/gostinuy_dvor.jpg"
+                data-landmarks="ТЦ Гостиный двор:1 мин, Русский музей:7 мин, Филармония:5 мин"
                 data-info="Расположена в самом центре Невского проспекта. Имеет пересадочный узел на станцию «Невский проспект» Синей линии."
                 data-color="var(--line-3)" />
 
@@ -547,6 +637,7 @@
                 data-year="1967" 
                 data-arch="Ю. В. Билинский"
                 data-img="img/mayakovskaya.jpg"
+                data-landmarks="ТЦ Стокманн:1 мин, Улица Жуковского:5 мин"
                 data-info="Стены центрального зала облицованы ярко-красной смальтой. Названа в честь поэта Владимира Маяковского."
                 data-color="var(--line-3)" />
 
@@ -556,6 +647,7 @@
                 data-year="1967" 
                 data-arch="Л. П. Лавров"
                 data-img="img/ploshad_alex_nevsk1.jpg"
+                data-landmarks="Александро-Невская Лавра:3 мин"
                 data-info="Названа по одноименной площади. На станции установлено мозаичное панно «Александр Невский»."
                 data-color="var(--line-3)" />
 
@@ -565,6 +657,7 @@
                 data-year="1970" 
                 data-arch="А. К. Андреев"
                 data-img="img/elizarovskaya .jpg"
+                data-landmarks="Книжная ярмарка Крупской:10 мин, Сад им. Ткачей:5 мин"
                 data-info="Названа в честь революционера Марка Елизарова. Находится в историческом промышленном районе."
                 data-color="var(--line-3)" />
 
@@ -574,6 +667,7 @@
                 data-year="1970" 
                 data-arch="А. Я. Мачерет"
                 data-img="img/lomonosovskaya.jpg"
+                data-landmarks="Императорский фарфоровый завод:7 мин"
                 data-info="Расположена рядом с Императорским фарфоровым заводом (бывшим им. Ломоносова)."
                 data-color="var(--line-3)" />
 
@@ -583,6 +677,7 @@
                 data-year="1981" 
                 data-arch="Д. С. Гольдгор"
                 data-img="img/proletarskaya.jpg"
+                data-landmarks="Речной вокзал:15 мин, Троицкая церковь Кулич и Пасха:12 мин"
                 data-info="До открытия «Адмиралтейской» была самой глубокой станцией в городе. Имеет каскад из двух эскалаторов."
                 data-color="var(--line-3)" />
 
@@ -601,6 +696,7 @@
                 data-year="1984" 
                 data-arch="А. С. Гецкин"
                 data-img="img/rubackoe.jpg"
+                data-landmarks="Набережная Невы:10 мин, Ж/Д станция Рыбацкое:1 мин"
                 data-info="Южная конечная станция линии. Платформы разделены по направлениям, как на вокзалах."
                 data-color="var(--line-3)" />
 
@@ -612,6 +708,7 @@
                 data-year="2024 (план)" 
                 data-arch="А. М. Коновалов"
                 data-img="img/gorniy_institut.jpg"
+                data-landmarks="Музей Эрарта:10 мин, Ледокол Красин:15 мин"
                 data-info="Перспективная станция на Васильевском острове. Дизайн вдохновлен работами архитекторов эпохи классицизма."
                 data-color="var(--line-4)" />
 
@@ -621,6 +718,7 @@
                 data-year="2009" 
                 data-arch="Е. М. Рапопорт"
                 data-img="img/spasskaya.jpg"
+                data-landmarks="Сенная площадь:1 мин, БДТ им. Товстоногова:15 мин"
                 data-info="Названа в честь разрушенного храма Спаса-на-Сенной. В отделке использованы мозаичные панно на тему петербургского зодчества."
                 data-color="var(--line-4)" />
 
@@ -630,6 +728,7 @@
                 data-year="1991" 
                 data-arch="А. В. Жук"
                 data-img="img/dostoevskaya.jpg"
+                data-landmarks="Музей Арктики и Антарктики:5 мин, Пять углов:3 мин"
                 data-info="Оформление передает атмосферу Петербурга Достоевского. Станция соединена переходом со станцией «Владимирская»."
                 data-color="var(--line-4)" />
 
@@ -639,6 +738,7 @@
                 data-year="1991" 
                 data-arch="Ю. В. Билинский"
                 data-img="img/ligovsky_prospect.jpg"
+                data-landmarks="Лофт-проект Этажи:5 мин"
                 data-info="В торце зала находится витраж с изображением Лиговского канала, который раньше протекал на месте проспекта."
                 data-color="var(--line-4)" />
 
@@ -648,6 +748,7 @@
                 data-year="1985" 
                 data-arch="Г. Н. Булдаков"
                 data-img="img/alex_nevsky_2.jpg"
+                data-landmarks="Александро-Невская Лавра:3 мин, Некрополь:5 мин"
                 data-info="В торце зала размещена большая мозаика «Ледовое побоище», изображающая дружину Александра Невского."
                 data-color="var(--line-4)" />
 
@@ -657,6 +758,7 @@
                 data-year="1985" 
                 data-arch="В. Г. Хильченко"
                 data-img="img/novocherkasskaya.jpg"
+                data-landmarks="Театр Буфф:7 мин, Малоохтинская набережная:10 мин, Памятник Охтинке:5 мин"
                 data-info="До 1992 года называлась «Красногвардейская». Имеет уникальный кольцевой подземный переход с 12 выходами."
                 data-color="var(--line-4)" />
 
@@ -666,6 +768,7 @@
                 data-year="1985" 
                 data-arch="В. Н. Щербин"
                 data-img="img/ladozhskaya.jpg"
+                data-landmarks="Ладожский вокзал:1 мин, Театр Мастерская:15 мин"
                 data-info="Расположена у Ладожского вокзала. Тема оформления посвящена «Дороге Жизни» через Ладожское озеро."
                 data-color="var(--line-4)" />
 
@@ -675,6 +778,7 @@
                 data-year="1985" 
                 data-arch="А. М. Сариджанов"
                 data-img="img/prospect_bolshevikov.jpg"
+                data-landmarks="Ледовый дворец:3 мин, Хоккейный город СКА:5 мин"
                 data-info="Ступенчатый потолок станции символизирует развевающееся знамя революции."
                 data-color="var(--line-4)" />
 
@@ -684,6 +788,7 @@
                 data-year="1987" 
                 data-arch="О. Г. Кузнецов"
                 data-img="img/dubenko.jpg"
+                data-landmarks="Парк им. Есенина:3 мин, Храм Рождества Христова:5 мин"
                 data-info="Панно в торце и на стенах выполнены из мозаики и камня. Конечная станция на востоке города."
                 data-color="var(--line-4)" />
                         
@@ -695,6 +800,7 @@
                 data-year="2025" 
                 data-arch="П. В. Малафеев"
                 data-img="img/ugo-zapadnaya.jpg"
+                data-landmarks="ТЦ Континент:5 мин, Цирк в Автово:15 мин"
                 data-info="Также известна под проектным названием «Маршала Жукова». Станция призвана разгрузить Красносельский район, где раньше не было метро."
                 data-color="var(--line-6)" />
 
@@ -704,6 +810,7 @@
                 data-year="2025" 
                 data-arch="Н. В. Ромашкин-Тиманов"
                 data-img="img/putilovskaya.jpg"
+                data-landmarks="Кировский завод:5 мин, Сад Девятого Января:10 мин"
                 data-info="Пересадочный узел на станцию «Кировский завод» Красной линии. Дизайн посвящен истории Путиловского завода и индустриальной мощи города."
                 data-color="var(--line-6)" />
         </svg>
@@ -715,6 +822,8 @@
         <h3 id="st-name">Название</h3>
         <p id="st-desc"></p>
         <p id="st-info"></p> 
+
+        <div id="st-landmarks"></div>
     </div>
     <script src="script.js" defer></script>
 </body>

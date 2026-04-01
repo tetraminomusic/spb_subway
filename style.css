@@ -1,141 +1,541 @@
 :root {
     --bg-color: #F8FBFC; 
     --text-color: #333;
-    --line-1: #D12240; --line-2: #017FCA; --line-3: #0B955D; 
-    --line-4: #DA730A; --line-5: #701177; --line-6: #8B6135;
+    
+    /* Официальные цвета линий метро СПб */
+    --line-1: #D12240; /* Красная */
+    --line-2: #017FCA; /* Синяя */
+    --line-3: #0B955D; /* Зеленая */
+    --line-4: #DA730A; /* Оранжевая */
+    --line-5: #701177; /* Фиолетовая */
+    --line-6: #8B6135; /* Коричневая */
+}
+
+/* Базовые настройки для масштабируемости шрифтов на ПК */
+html {
+    font-size: clamp(14px, 1vw + 10px, 18px);
 }
 
 body {
-    margin: 0; padding: 0;
+    margin: 0;
+    padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    overflow-y: auto; overflow-x: hidden;
-    cursor: none; 
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+    
+    /* Фиксируем body для стабильной работы Android */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
+    cursor: none; /* Скрываем курсор для ПК */
 }
 
+/* КОНТЕЙНЕР ДЛЯ СКРОЛЛА КАРТЫ */
 .container {
-    width: 100vw; display: block;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
 }
 
 #metro-map {
-    width: 100%; height: auto; display: block;
+    width: 100%;
+    height: auto;
+    display: block;
+    touch-action: pan-x pan-y; /* Исправляет клики на Android */
 }
 
+/* Фон не должен мешать кликам */
 #metro-map image {
     pointer-events: none;
 }
 
+/* --- СТИЛИ СТАНЦИЙ --- */
 .station {
     fill: #ffffff;      
     stroke: #333333;    
     stroke-width: 4px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+    
     transform-origin: center;
     transform-box: fill-box; 
+    
     pointer-events: all !important;
-    -webkit-tap-highlight-color: transparent; 
+    -webkit-tap-highlight-color: transparent;
 }
 
 .station:hover, .station.touched {
     fill: #FFD700; 
-    stroke: #000;
-    transform: scale(1.2); 
+    stroke: #000000;
+    transform: scale(1.25); 
     stroke-width: 3px;
 }
 
+/* --- КАСТОМНЫЙ КУРСОР --- */
 #custom-cursor {
-    position: fixed; width: 20px; height: 20px;
-    background: rgba(0,0,0,0.1); border: 1px solid #333;
-    border-radius: 50%; pointer-events: none; z-index: 10000;
+    position: fixed;
+    width: 22px;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid #333;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000000;
     transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
 }
 
+/* --- ЛЕГЕНДА --- */
 .legend {
-    position: fixed; top: 20px; left: 30px;
-    background: rgba(255,255,255,0.95); padding: 15px;
-    border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    z-index: 100; pointer-events: none; border: 1px solid #ddd;
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: rgba(255,255,255,0.95);
+    padding: 1rem 1.5rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+    z-index: 1000;
+    pointer-events: none;
+    border: 1px solid #ddd;
+    max-width: 25vw;
 }
-.legend h2 { margin: 0 0 5px 0; font-size: 18px; }
-.legend p { margin: 0; font-size: 13px; color: #555; }
 
+.legend h2 { margin: 0 0 0.3rem 0; font-size: 1.3rem; }
+.legend p { margin: 0; font-size: 0.85rem; color: #555; }
 
+/* --- ТУЛТИП (ВСПЛЫВАЮЩЕЕ ОКНО) ДЛЯ ПК --- */
 #tooltip {
-    display: none; 
+
+    pointer-events: auto; /* ТЕПЕРЬ МОЖНО КЛИКАТЬ ВНУТРИ */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
     position: fixed; 
-    width: 250px;
-    background: rgba(30, 30, 30, 0.95); color: #fff;
-    border-left: 5px solid transparent; 
-    padding: 15px; border-radius: 6px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    pointer-events: none; z-index: 9999;
+    display: none;
+    width: clamp(280px, 22vw, 420px); 
+    background: rgba(30, 30, 30, 0.98);
+    color: #fff;
+    
+    /* ЦВЕТНАЯ ПОЛОСКА СЛЕВА ДЛЯ ПК */
+    border-left: 6px solid transparent; 
+    
+    padding: 1.2rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.5);
+    pointer-events: none;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
 }
-#tooltip img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 10px; background: #444; }
-#tooltip h3 { margin: 0 0 5px 0; font-size: 18px; }
-#tooltip p { margin: 0; font-size: 12px; color: #ccc; line-height: 1.4; }
-#st-info { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-style: italic; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#tooltip img {
+    width: 100%;
+    height: clamp(140px, 12vw, 220px);
+    object-fit: cover;
+    border-radius: 0.4rem;
+    margin-bottom: 0.8rem;
+    background: #222;
+}
+
+#tooltip h3 { margin: 0 0 0.5rem 0; font-size: 1.4rem; }
+#tooltip p { margin: 0; font-size: 0.95rem; color: #ccc; line-height: 1.5; }
+
+#st-info {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-style: italic;
+    color: #eee;
+}
+
+/* Прячем кнопку закрытия на ПК */
 #close-btn { display: none; }
 
+/* --- СТИЛИ ПОИСКА --- */
+.search-wrapper {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 2000;
+    width: 300px;
+}
 
+.search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#station-search {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#station-search:focus {
+    border-color: var(--line-1);
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+#search-clear {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    display: none; /* Появится при вводе текста */
+}
+
+/* Выпадающий список результатов */
+.search-results-list {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: none;
+}
+
+.search-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+    color: #333;
+    font-size: 14px;
+}
+
+.search-item:hover {
+    background: #f5f5f5;
+}
+
+.search-item .line-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+#st-landmarks {
+    margin-top: 10px;
+    display: grid;
+    /* Разрешаем кнопкам быть по 100-120px, они будут сами вставать в ряд */
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+    gap: 5px;
+}
+
+.landmarks-header {
+    grid-column: 1 / -1; /* Чтобы заголовок занимал всю ширину сетки */
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.landmark-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px; /* Более острые углы для компактности */
+    padding: 6px 8px;   /* Уменьшенные отступы */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    min-height: 34px;   /* Фиксированная небольшая высота */
+    justify-content: center;
+    cursor: default; 
+    user-select: none;
+}
+
+.landmark-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: none; 
+}
+
+.landmark-name {
+    color: #fff;
+    font-size: 11px;    /* Мелкий, но читаемый шрифт */
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.landmark-time {
+    color: #999;
+    font-size: 9px;     /* Совсем маленький шрифт для времени */
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 1px;
+}
+
+/* --- СТИЛИ ЛЕГЕНДЫ --- */
+.line-selector {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.line-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    pointer-events: auto; /* Разрешаем клики в легенде */
+}
+
+.line-item:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.line-item.active {
+    background: rgba(0,0,0,0.1);
+    font-weight: bold;
+}
+
+.line-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+#reset-filter {
+    margin-top: 15px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    display: none; /* Покажем только когда фильтр активен */
+    pointer-events: auto;
+}
+
+/* --- ЭФФЕКТЫ ПОДСВЕТКИ --- */
+
+/* Плавность для фона и станций */
+#metro-map image, .station {
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Класс для "затухания" фона */
+.map-dimmed #metro-map image {
+    opacity: 0.2; /* Затемняем схему */
+    filter: grayscale(1); /* Делаем её серой */
+}
+
+/* Класс для "затухания" ненужных станций */
+.station.not-target {
+    opacity: 0.1 !important;
+    pointer-events: none; /* Нельзя нажать на бледные станции */
+}
+
+.side-panel {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 320px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    z-index: 2000;
+    border: 1px solid #eee;
+    backdrop-filter: blur(10px);
+}
+
+.side-panel h2 { margin: 0 0 15px 0; font-size: 20px; color: #222; }
+.panel-hint { margin: 15px 0 10px 0; font-size: 13px; color: #666; }
+
+/* ПОИСК ВНУТРИ ПАНЕЛИ */
+.search-section { position: relative; margin-bottom: 10px; }
+
+#station-search {
+    width: 100%;
+    padding: 10px 35px 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+#search-clear {
+    position: absolute; right: 10px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; color: #999;
+    font-size: 18px; cursor: pointer; display: none;
+}
+
+.search-results-list {
+    position: absolute; top: 100%; left: 0; width: 100%;
+    background: #fff; border-radius: 8px;
+    max-height: 200px; overflow-y: auto;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 2100; display: none; margin-top: 5px;
+}
+
+/* СЕТКА ЛИНИЙ (2 колонки) */
+.line-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.line-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px; border-radius: 6px;
+    cursor: pointer; font-size: 12px;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+}
+
+.line-item:hover { background: #f0f0f0; }
+.line-item.active { background: #f0f0f0; border-color: #ddd; font-weight: bold; }
+
+.line-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+#reset-filter {
+    margin-top: 15px; width: 100%; padding: 10px;
+    border: 1px solid #ddd; border-radius: 8px;
+    background: #fff; cursor: pointer; font-size: 12px;
+    display: none; transition: background 0.2s;
+}
+#reset-filter:hover { background: #f9f9f9; }
+
+
+/* ============================================================ */
+/* МОБИЛЬНАЯ ВЕРСИЯ (Android и iOS)                             */
+/* ============================================================ */
 @media (max-width: 992px) {
     body { 
         cursor: auto; 
-        overflow: auto !important; 
+    }
+
+    .side-panel {
+        top: 10px; left: 10px; right: 10px;
+        width: auto; padding: 12px;
+        border-radius: 10px;
+    }
+    .side-panel h2 { font-size: 16px; margin-bottom: 8px; }
+    .line-selector { gap: 4px; }
+    .line-item { padding: 5px; font-size: 11px; }
+
+    .line-selector {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .line-item { font-size: 12px; }
+
+    #st-landmarks {
+        grid-template-columns: 1fr 1fr;
+    }
+    .landmark-card {
+        padding: 8px;
+    }
+    .landmark-name { font-size: 12px; }
+
+    .search-wrapper {
+        top: 80px; /* Чтобы не перекрывал легенду */
+        left: 10px;
+        right: 10px;
+        width: auto;
+    }
+    
+    #station-search {
+        padding: 10px 15px;
+        font-size: 14px;
     }
     
     #custom-cursor { display: none !important; }
-    
-    .container { 
-        width: 300vw;
-        position: relative; 
+
+    /* ЗУМ КАРТЫ ДЛЯ ТЕЛЕФОНА */
+    #metro-map {
+        width: 300%; 
+        min-width: 1200px;
     }
-    
-    .legend { 
-        left: 10px; right: 10px; padding: 10px; 
+
+    .legend {
+        top: 10px; left: 10px; right: 10px;
+        max-width: none; padding: 8px 15px;
     }
     .legend h2 { font-size: 16px; }
 
+    /* МОБИЛЬНЫЙ ПОП-АП (ПО ЦЕНТРУ) */
     #tooltip {
-        display: none;
+        display: none; 
         position: fixed !important;
         
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) scale(0.9) !important;
         
-        width: 90vw !important; 
-        max-width: 380px !important;
+        width: 88vw !important; 
+        max-width: 400px !important;
         height: auto;
-        max-height: 80vh; 
+        max-height: 85vh; 
         overflow-y: auto;
         
-        background: rgba(30, 30, 30, 0.98);
+        background: #1c1c1c !important;
         z-index: 999999 !important;
         
+        /* ЦВЕТНАЯ ПОЛОСКА СВЕРХУ ДЛЯ МОБИЛОК */
         border-left: none !important; 
-        border-top: 6px solid gold;
-        border-radius: 12px; 
-        padding: 20px;
+        border-top: 8px solid transparent !important; 
+        
+        border-radius: 15px !important; 
+        padding: 25px 20px !important;
         box-sizing: border-box;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         pointer-events: all !important;
         
         opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease !important;
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     }
 
     #tooltip.active {
         display: block !important;
-        opacity: 1;
+        opacity: 1 !important;
         transform: translate(-50%, -50%) scale(1) !important;
     }
 
-    #tooltip img { height: 180px; }
-    #st-name { font-size: 22px; padding-right: 40px; margin-top: 0; }
+    #tooltip img { height: 180px; border-radius: 8px; }
+    #st-name { font-size: 22px; padding-right: 45px; margin-top: 5px; }
 
-
+    /* КНОПКА КРЕСТИК (АККУРАТНАЯ ВНУТРИ) */
     #close-btn {
         display: flex !important; 
         position: absolute;
@@ -144,8 +544,8 @@ body {
         width: 38px; 
         height: 38px;
         
-        background: #ffffff; 
-        color: #000000; 
+        background: #ffffff !important; 
+        color: #000000 !important; 
         border-radius: 50%;
         border: none;
         
@@ -156,13 +556,13 @@ body {
         
         justify-content: center; 
         align-items: center;
-        z-index: 100000; 
+        z-index: 1000001; 
         cursor: pointer;
         line-height: 1;
     }
     
     #close-btn:active {
-        background: #eeeeee;
-        transform: scale(0.95);
+        transform: scale(0.9);
+        background: #eee !important;
     }
 }
