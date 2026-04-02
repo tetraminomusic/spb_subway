@@ -8,25 +8,25 @@ const closeBtn = document.getElementById('close-btn');
 const svgMap = document.getElementById('metro-map');
 const containerElement = document.querySelector('.container');
 
-// Поиск
 const searchInput = document.getElementById('station-search');
 const searchResults = document.getElementById('search-results');
 const searchClear = document.getElementById('search-clear');
-
-// Легенда (Подсветка)
 const lineItems = document.querySelectorAll('.line-item');
 const resetBtn = document.getElementById('reset-filter');
+const toggleLinesBtn = document.getElementById('toggle-lines-btn');
+const linesExpandContainer = document.getElementById('lines-expand-container');
+const decadeButtons = document.querySelectorAll('.decade-btn');
 
-let hideTimeout; // Таймер для задержки скрытия окна на ПК
+let hideTimeout; 
+let currentSelectedLine = null; 
+let currentSelectedYear = 2030; 
 
-// --- 1. ИНИЦИАЛИЗАЦИЯ КАСТОМНЫХ ТЕГОВ ---
 function initCustomTags() {
     document.querySelectorAll('half-circle').forEach(el => {
         const cx = parseFloat(el.getAttribute('cx')), cy = parseFloat(el.getAttribute('cy')), r = parseFloat(el.getAttribute('r')), side = el.getAttribute('side');
         let d = (side === 'left') ? `M ${cx},${cy+r} A ${r},${r} 0 0,1 ${cx},${cy-r} Z` : `M ${cx},${cy-r} A ${r},${r} 0 0,1 ${cx},${cy+r} Z`;
         replaceEl(el, d);
     });
-
     document.querySelectorAll('third-circle').forEach(el => {
         const cx = parseFloat(el.getAttribute('cx')), cy = parseFloat(el.getAttribute('cy')), r = parseFloat(el.getAttribute('r')), start = parseFloat(el.getAttribute('rotate')) || 0;
         const end = start + 120, x1 = cx + r * Math.cos(Math.PI * start / 180), y1 = cy + r * Math.sin(Math.PI * start / 180), x2 = cx + r * Math.cos(Math.PI * end / 180), y2 = cy + r * Math.sin(Math.PI * end / 180);
@@ -43,252 +43,186 @@ function replaceEl(el, d) {
 
 initCustomTags();
 
-// --- 2. ФУНКЦИИ СБРОСА И ОЧИСТКИ ---
-
-function clearAllHighlights() {
-    document.querySelectorAll('.station').forEach(st => {
-        st.classList.remove('touched');
+function applyGlobalFilters() {
+    const all = document.querySelectorAll('.station');
+    if (currentSelectedLine || currentSelectedYear < 2030) containerElement.classList.add('map-dimmed');
+    else containerElement.classList.remove('map-dimmed');
+    all.forEach(st => {
+        const matchLine = !currentSelectedLine || st.getAttribute('data-color') === currentSelectedLine;
+        const matchYear = (parseInt(st.getAttribute('data-year')) || 0) <= currentSelectedYear;
+        if (matchLine && matchYear) st.classList.remove('not-target', 'is-future');
+        else {
+            if (!matchLine) st.classList.add('not-target'); else st.classList.remove('not-target');
+            if (!matchYear) st.classList.add('is-future'); else st.classList.remove('is-future');
+        }
     });
 }
 
-function closeSearch() {
-    if (searchResults) searchResults.style.display = 'none';
-    if (searchClear) searchClear.style.display = 'none';
-}
-
-function resetMapFilter() {
-    containerElement.classList.remove('map-dimmed');
-    lineItems.forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.station').forEach(st => st.classList.remove('not-target'));
-    if(resetBtn) resetBtn.style.display = 'none';
-}
-
-// --- 3. ЛОГИКА ЗАПОЛНЕНИЯ И ПОКАЗА ТУЛТИПА ---
-
 function openTooltip(station) {
-    const name = station.getAttribute('data-name') || "Неизвестная станция";
-    const type = station.getAttribute('data-type') || "";
-    const year = station.getAttribute('data-year') || "";
-    const arch = station.getAttribute('data-arch') || "";
-    const info = station.getAttribute('data-info');
-    const img = station.getAttribute('data-img');
-    const color = station.getAttribute('data-color') || '#888';
-    const landmarksData = station.getAttribute('data-landmarks');
-
-    stName.innerText = name;
-    stDesc.innerHTML = `<strong>Тип:</strong> ${type}<br><strong>Открыта:</strong> ${year} г.<br><strong>Архитектор:</strong> ${arch}`;
+    stName.innerText = station.getAttribute('data-name') || "Неизвестная станция";
+    stDesc.innerHTML = `<strong>Тип:</strong> ${station.getAttribute('data-type')}<br><strong>Открыта:</strong> ${station.getAttribute('data-year')} г.<br><strong>Архитектор:</strong> ${station.getAttribute('data-arch')}`;
+    stInfo.innerText = station.getAttribute('data-info') || "";
+    stInfo.style.display = stInfo.innerText ? 'block' : 'none';
+    stImg.src = station.getAttribute('data-img') || "";
+    stImg.style.display = stImg.src ? 'block' : 'none';
     
-    stInfo.innerText = info || "";
-    stInfo.style.display = info ? 'block' : 'none';
-
-    if (img) {
-        stImg.src = img;
-        stImg.style.display = 'block';
-    } else {
-        stImg.style.display = 'none';
-    }
-
-    let landmarksContainer = document.getElementById('st-landmarks');
-    if (!landmarksContainer) {
-        landmarksContainer = document.createElement('div');
-        landmarksContainer.id = 'st-landmarks';
-        tooltip.appendChild(landmarksContainer);
-    }
-    landmarksContainer.innerHTML = '';
-
-    if (landmarksData) {
-        const header = document.createElement('div');
-        header.className = 'landmarks-header';
-        header.innerText = 'Достопримечательности рядом:';
-        landmarksContainer.appendChild(header);
-
-        landmarksData.split(',').forEach(item => {
-            const [lName, lTime] = item.split(':');
-            const card = document.createElement('div');
-            card.className = 'landmark-card';
-            card.innerHTML = `
-                <span class="landmark-name">${lName.trim()}</span>
-                <span class="landmark-time"> ${lTime ? lTime.trim() : 'рядом'}</span>
-            `;
-            landmarksContainer.appendChild(card);
+    const land = station.getAttribute('data-landmarks');
+    let cont = document.getElementById('st-landmarks');
+    if (!cont) { cont = document.createElement('div'); cont.id = 'st-landmarks'; tooltip.appendChild(cont); }
+    cont.innerHTML = land ? '<div class="landmarks-header">Достопримечательности рядом:</div>' : '';
+    if (land) {
+        land.split(',').forEach(item => {
+            const [n, t] = item.split(':');
+            const card = document.createElement('div'); card.className = 'landmark-card';
+            card.innerHTML = `<span class="landmark-name">${n.trim()}</span><span class="landmark-time"> ${t ? t.trim() : 'рядом'}</span>`;
+            cont.appendChild(card);
         });
-        landmarksContainer.style.display = 'grid';
-    } else {
-        landmarksContainer.style.display = 'none';
-    }
+        cont.style.display = 'grid';
+    } else cont.style.display = 'none';
 
+    const color = station.getAttribute('data-color') || '#888';
     if (window.innerWidth <= 992) {
-        tooltip.removeAttribute('style'); 
-        tooltip.style.borderTopColor = color;
-        tooltip.style.display = 'block';
-        setTimeout(() => tooltip.classList.add('active'), 10);
+        tooltip.removeAttribute('style'); tooltip.style.borderTopColor = color;
+        tooltip.style.display = 'block'; setTimeout(() => tooltip.classList.add('active'), 10);
     } else {
-        tooltip.style.borderLeftColor = color;
-        tooltip.style.display = 'block';
-        tooltip.style.opacity = '1';
+        tooltip.style.borderLeftColor = color; tooltip.style.display = 'block'; tooltip.style.opacity = '1';
     }
 }
 
-// --- 4. СОБЫТИЯ СТАНЦИЙ ---
+function clearAllHighlights() {
+    document.querySelectorAll('.station').forEach(st => st.classList.remove('touched'));
+}
 
-const stations = document.querySelectorAll('.station');
-
-stations.forEach(station => {
-    // ПК: ТОЛЬКО НАВЕДЕНИЕ
-    station.addEventListener('mouseenter', function() {
+document.querySelectorAll('.station').forEach(st => {
+    st.addEventListener('mouseenter', function() {
         if (window.innerWidth > 992) {
             clearTimeout(hideTimeout);
-            clearAllHighlights(); // Убираем старые подсветки (например, от поиска)
+            clearAllHighlights();
             this.classList.add('touched');
             openTooltip(this);
             cursor.style.transform = 'translate(-50%, -50%) scale(2)';
         }
     });
-
-    station.addEventListener('mouseleave', function() {
+    st.addEventListener('mouseleave', function() {
         if (window.innerWidth > 992) {
-            hideTimeout = setTimeout(() => {
-                if (!tooltip.matches(':hover')) {
-                    tooltip.style.display = 'none';
-                    this.classList.remove('touched'); // Сразу гасим точку на ПК
-                }
-            }, 300);
+            hideTimeout = setTimeout(() => { if (!tooltip.matches(':hover')) { tooltip.style.display = 'none'; this.classList.remove('touched'); } }, 300);
             cursor.style.transform = 'translate(-50%, -50%) scale(1)';
         }
     });
 });
 
-// ГЛОБАЛЬНЫЙ КЛИК (Для мобилок и сброса)
-document.addEventListener('click', function(e) {
-    const station = e.target.closest('.station');
-    const isInsidePanel = e.target.closest('.side-panel');
-    const isInsideTooltip = e.target.closest('#tooltip');
-
-    // ЛОГИКА ДЛЯ МОБИЛОК
-    if (station && window.innerWidth <= 992) {
-        e.preventDefault();
+document.addEventListener('click', (e) => {
+    const st = e.target.closest('.station');
+    if (st && window.innerWidth <= 992) {
         clearAllHighlights();
-        station.classList.add('touched');
-        openTooltip(station);
-        return;
-    }
-
-    // СБРОС ПРИ КЛИКЕ МИМО
-    if (!station && !isInsidePanel && !isInsideTooltip) {
-        closeSearch();
-        if(containerElement.classList.contains('map-dimmed')) resetMapFilter();
-        
-        if (window.innerWidth <= 992) {
-            tooltip.classList.remove('active');
-            setTimeout(() => { tooltip.style.display = 'none'; }, 300);
-        } else {
-            tooltip.style.display = 'none';
+        st.classList.add('touched');
+        openTooltip(st);
+    } else if (!e.target.closest('.side-panel') && !e.target.closest('#tooltip') && !e.target.closest('.timeline-container')) {
+        if (searchResults) searchResults.style.display = 'none';
+        if (containerElement.classList.contains('map-dimmed')) {
+            containerElement.classList.remove('map-dimmed');
+            lineItems.forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.station').forEach(s => s.classList.remove('not-target'));
+            if(resetBtn) resetBtn.style.display = 'none';
+            currentSelectedLine = null;
         }
+        if (window.innerWidth <= 992) { tooltip.classList.remove('active'); setTimeout(() => tooltip.style.display = 'none', 300); }
+        else tooltip.style.display = 'none';
         clearAllHighlights();
     }
 });
 
-// Кнопка закрытия (Мобилка)
-if (closeBtn) {
-    closeBtn.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        tooltip.classList.remove('active');
-        setTimeout(() => { tooltip.style.display = 'none'; }, 300);
-        clearAllHighlights();
-    });
-}
-
-// Тултип ПК (чтобы не закрывался при наведении на кнопки маршрутов)
+if (closeBtn) closeBtn.onclick = () => { tooltip.classList.remove('active'); setTimeout(() => tooltip.style.display = 'none', 300); clearAllHighlights(); };
 tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-tooltip.addEventListener('mouseleave', () => {
-    if (window.innerWidth > 992) {
-        tooltip.style.display = 'none';
-        clearAllHighlights();
-    }
-});
-
-// --- 5. ПОИСК ---
+tooltip.addEventListener('mouseleave', () => { if (window.innerWidth > 992) { tooltip.style.display = 'none'; clearAllHighlights(); } });
 
 if (searchInput) {
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
+    searchInput.oninput = function() {
+        const q = this.value.toLowerCase().trim();
         searchResults.innerHTML = '';
-        if (query.length > 0) {
+        if (q) {
             searchClear.style.display = 'block';
-            const allSt = document.querySelectorAll('.station');
-            let count = 0;
-            allSt.forEach(st => {
+            document.querySelectorAll('.station').forEach(st => {
                 const name = st.getAttribute('data-name').toLowerCase();
-                const landmarks = (st.getAttribute('data-landmarks') || "").toLowerCase();
-                if ((name.includes(query) || landmarks.includes(query)) && count < 10) {
-                    const div = document.createElement('div');
-                    div.className = 'search-item';
+                const land = (st.getAttribute('data-landmarks') || "").toLowerCase();
+                if (name.includes(q) || land.includes(q)) {
+                    const div = document.createElement('div'); div.className = 'search-item';
                     div.innerHTML = `<span class="line-dot" style="background:${st.getAttribute('data-color')}"></span> ${st.getAttribute('data-name')}`;
-                    div.onclick = (e) => {
-                        e.stopPropagation();
-                        goToStation(st);
-                        closeSearch();
+                    div.onclick = () => {
+                        st.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                        clearAllHighlights(); st.classList.add('touched');
+                        setTimeout(() => openTooltip(st), 600);
+                        searchResults.style.display = 'none';
                     };
                     searchResults.appendChild(div);
-                    count++;
                 }
             });
-            searchResults.style.display = count > 0 ? 'block' : 'none';
-        } else {
-            closeSearch();
-        }
-    });
+            searchResults.style.display = searchResults.children.length > 0 ? 'block' : 'none';
+        } else { searchResults.style.display = 'none'; searchClear.style.display = 'none'; }
+    };
 }
 
-function goToStation(station) {
-    clearAllHighlights();
-    station.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-    station.classList.add('touched');
-    setTimeout(() => openTooltip(station), 600);
-}
+if (searchClear) searchClear.onclick = () => { searchInput.value = ''; searchResults.style.display = 'none'; searchClear.style.display = 'none'; };
 
-if (searchClear) searchClear.onclick = () => { searchInput.value = ''; closeSearch(); };
-
-// --- 6. ЛЕГЕНДА (ПОДСВЕТКА ВЕТОК) ---
-
-lineItems.forEach(item => {
-    item.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const selectedColor = this.getAttribute('data-line-filter');
+document.querySelectorAll('.line-item').forEach(item => {
+    item.onclick = (e) => {
+        e.stopPropagation(); currentSelectedLine = item.getAttribute('data-line-filter');
         lineItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        
-        containerElement.classList.add('map-dimmed');
-        if(resetBtn) resetBtn.style.display = 'block';
-
-        const allStations = document.querySelectorAll('.station');
-        allStations.forEach(st => {
-            if (st.getAttribute('data-color') === selectedColor) {
-                st.classList.remove('not-target');
-            } else {
-                st.classList.add('not-target');
-            }
-        });
-    });
+        item.classList.add('active');
+        if (resetBtn) resetBtn.style.display = 'block';
+        applyGlobalFilters();
+    };
 });
 
-if(resetBtn) resetBtn.onclick = (e) => { e.stopPropagation(); resetMapFilter(); };
+resetBtn.onclick = (e) => {
+    e.stopPropagation(); currentSelectedLine = null;
+    resetBtn.style.display = 'none';
+    document.querySelectorAll('.line-item').forEach(i => i.classList.remove('active'));
+    applyGlobalFilters();
+};
 
-// --- 7. КУРСОР И ФИНАЛЬНЫЕ ШТРИХИ ---
+decadeButtons.forEach(btn => {
+    btn.onclick = () => {
+        currentSelectedYear = parseInt(btn.getAttribute('data-year'));
+        decadeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tooltip.style.display = 'none';
+        applyGlobalFilters();
+    };
+});
+
+document.getElementById('close-timeline').onclick = () => {
+    currentSelectedYear = 2030;
+    decadeButtons.forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-year="2030"]').classList.add('active');
+    applyGlobalFilters();
+};
+
+if (toggleLinesBtn) {
+    toggleLinesBtn.onclick = (e) => {
+        e.stopPropagation();
+        const isExp = linesExpandContainer.classList.toggle('expanded');
+        toggleLinesBtn.innerText = isExp ? 'Скрыть фильтр ↑' : 'Фильтр по линиям ↓';
+    };
+}
 
 document.addEventListener('mousemove', (e) => {
-    if (window.innerWidth > 992) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
 
-        if (tooltip.style.display === 'block' && !tooltip.matches(':hover')) {
-            let w = tooltip.offsetWidth, h = tooltip.offsetHeight;
-            let x = e.clientX + 20, y = e.clientY + 20;
-            if (x + w > window.innerWidth) x = e.clientX - w - 20;
-            if (y + h > window.innerHeight) y = e.clientY - h - 20;
-            tooltip.style.left = x + 'px';
-            tooltip.style.top = y + 'px';
-        }
+    if (window.innerWidth > 992 && tooltip.style.display === 'block' && !tooltip.matches(':hover')) {
+        let w = tooltip.offsetWidth;
+        let h = tooltip.offsetHeight;
+        let x = e.clientX + 20;
+        let y = e.clientY + 20;
+
+        if (x + w > window.innerWidth) x = e.clientX - w - 20;
+        if (x < 10) x = 10;
+        if (y + h > window.innerHeight) y = e.clientY - h - 20;
+        if (y < 10) y = 10;
+
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
     }
 });
 

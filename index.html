@@ -12,8 +12,6 @@
 
     <div class="side-panel">
         <h2>Метрополитен СПб</h2>
-        
-        <!-- Поиск теперь внутри панели -->
         <div class="search-section">
             <div class="search-input-group">
                 <input type="text" id="station-search" placeholder="Найти станцию..." autocomplete="off">
@@ -22,30 +20,32 @@
             <div id="search-results" class="search-results-list"></div>
         </div>
 
-        <p class="panel-hint">Выберите линию для подсветки:</p>
-        
-        <div class="line-selector">
-            <div class="line-item" data-line-filter="var(--line-1)">
-                <span class="line-dot" style="background: var(--line-1);"></span> Линия 1
+        <button id="toggle-lines-btn">Фильтр по линиям </button>
+
+        <div id="lines-expand-container" class="collapsed">
+            <p class="panel-hint">Выберите линию для подсветки:</p>
+            <div class="line-selector">
+                <div class="line-item" data-line-filter="var(--line-1)">
+                    <span class="line-dot" style="background: var(--line-1);"></span> Линия 1
+                </div>
+                <div class="line-item" data-line-filter="var(--line-2)">
+                    <span class="line-dot" style="background: var(--line-2);"></span> Линия 2
+                </div>
+                <div class="line-item" data-line-filter="var(--line-3)">
+                    <span class="line-dot" style="background: var(--line-3);"></span> Линия 3
+                </div>
+                <div class="line-item" data-line-filter="var(--line-4)">
+                    <span class="line-dot" style="background: var(--line-4);"></span> Линия 4
+                </div>
+                <div class="line-item" data-line-filter="var(--line-5)">
+                    <span class="line-dot" style="background: var(--line-5);"></span> Линия 5
+                </div>
+                <div class="line-item" data-line-filter="var(--line-6)">
+                    <span class="line-dot" style="background: var(--line-6);"></span> Линия 6
+                </div>
             </div>
-            <div class="line-item" data-line-filter="var(--line-2)">
-                <span class="line-dot" style="background: var(--line-2);"></span> Линия 2
-            </div>
-            <div class="line-item" data-line-filter="var(--line-3)">
-                <span class="line-dot" style="background: var(--line-3);"></span> Линия 3
-            </div>
-            <div class="line-item" data-line-filter="var(--line-4)">
-                <span class="line-dot" style="background: var(--line-4);"></span> Линия 4
-            </div>
-            <div class="line-item" data-line-filter="var(--line-5)">
-                <span class="line-dot" style="background: var(--line-5);"></span> Линия 5
-            </div>
-            <div class="line-item" data-line-filter="var(--line-6)">
-                <span class="line-dot" style="background: var(--line-6);"></span> Линия 6
-            </div>
+            <button id="reset-filter">Сбросить фильтр</button>
         </div>
-        
-        <button id="reset-filter">Сбросить фильтр</button>
     </div>
 
     <div class="container">
@@ -825,6 +825,24 @@
 
         <div id="st-landmarks"></div>
     </div>
+
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <span>История развития метро</span>
+            <button id="close-timeline">Выйти из режима истории</button>
+        </div>
+        <div class="decades-list">
+            <button class="decade-btn" data-year="1959">1950-е</button>
+            <button class="decade-btn" data-year="1969">1960-е</button>
+            <button class="decade-btn" data-year="1979">1970-е</button>
+            <button class="decade-btn" data-year="1989">1980-е</button>
+            <button class="decade-btn" data-year="1999">1990-е</button>
+            <button class="decade-btn" data-year="2009">2000-е</button>
+            <button class="decade-btn" data-year="2019">2010-е</button>
+            <button class="decade-btn active" data-year="2030">Наши дни</button>
+        </div>
+    </div>
+
     <script src="script.js" defer></script>
 </body>
 </html>

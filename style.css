@@ -2,16 +2,15 @@
     --bg-color: #F8FBFC; 
     --text-color: #333;
     
-    /* Официальные цвета линий метро СПб */
-    --line-1: #D12240; /* Красная */
-    --line-2: #017FCA; /* Синяя */
-    --line-3: #0B955D; /* Зеленая */
-    --line-4: #DA730A; /* Оранжевая */
-    --line-5: #701177; /* Фиолетовая */
-    --line-6: #8B6135; /* Коричневая */
+    --line-1: #D12240; 
+    --line-2: #017FCA; 
+    --line-3: #0B955D; 
+    --line-4: #DA730A; 
+    --line-5: #701177; 
+    --line-6: #8B6135; 
 }
 
-/* Базовые настройки для масштабируемости шрифтов на ПК */
+
 html {
     font-size: clamp(14px, 1vw + 10px, 18px);
 }
@@ -23,35 +22,40 @@ body {
     color: var(--text-color);
     font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
     
-    /* Фиксируем body для стабильной работы Android */
+    
     width: 100vw;
     height: 100vh;
     overflow: hidden; 
-    cursor: none; /* Скрываем курсор для ПК */
+    cursor: none; 
 }
 
-/* КОНТЕЙНЕР ДЛЯ СКРОЛЛА КАРТЫ */
+
 .container {
     width: 100vw;
     height: 100vh;
     overflow: auto;
     position: relative;
     -webkit-overflow-scrolling: touch;
+
+    padding: 200px 0 150px 0; 
+    box-sizing: border-box; 
 }
 
 #metro-map {
     width: 100%;
     height: auto;
     display: block;
-    touch-action: pan-x pan-y; /* Исправляет клики на Android */
+    touch-action: pan-x pan-y;
+
+    margin: 0 auto;  
 }
 
-/* Фон не должен мешать кликам */
+
 #metro-map image {
     pointer-events: none;
 }
 
-/* --- СТИЛИ СТАНЦИЙ --- */
+
 .station {
     fill: #ffffff;      
     stroke: #333333;    
@@ -73,7 +77,7 @@ body {
     stroke-width: 3px;
 }
 
-/* --- КАСТОМНЫЙ КУРСОР --- */
+
 #custom-cursor {
     position: fixed;
     width: 22px;
@@ -87,7 +91,7 @@ body {
     transition: transform 0.1s ease-out;
 }
 
-/* --- ЛЕГЕНДА --- */
+
 .legend {
     position: fixed;
     top: 1.5rem;
@@ -105,10 +109,10 @@ body {
 .legend h2 { margin: 0 0 0.3rem 0; font-size: 1.3rem; }
 .legend p { margin: 0; font-size: 0.85rem; color: #555; }
 
-/* --- ТУЛТИП (ВСПЛЫВАЮЩЕЕ ОКНО) ДЛЯ ПК --- */
+
 #tooltip {
 
-    pointer-events: auto; /* ТЕПЕРЬ МОЖНО КЛИКАТЬ ВНУТРИ */
+    pointer-events: auto; 
     transition: opacity 0.2s ease, transform 0.2s ease;
 
     position: fixed; 
@@ -117,7 +121,7 @@ body {
     background: rgba(30, 30, 30, 0.98);
     color: #fff;
     
-    /* ЦВЕТНАЯ ПОЛОСКА СЛЕВА ДЛЯ ПК */
+    
     border-left: 6px solid transparent; 
     
     padding: 1.2rem;
@@ -153,10 +157,10 @@ body {
     color: #eee;
 }
 
-/* Прячем кнопку закрытия на ПК */
+
 #close-btn { display: none; }
 
-/* --- СТИЛИ ПОИСКА --- */
+
 .search-wrapper {
     position: fixed;
     top: 1.5rem;
@@ -197,10 +201,10 @@ body {
     font-size: 20px;
     color: #999;
     cursor: pointer;
-    display: none; /* Появится при вводе текста */
+    display: none; 
 }
 
-/* Выпадающий список результатов */
+
 .search-results-list {
     position: absolute;
     top: 105%;
@@ -239,13 +243,13 @@ body {
 #st-landmarks {
     margin-top: 10px;
     display: grid;
-    /* Разрешаем кнопкам быть по 100-120px, они будут сами вставать в ряд */
+    
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
     gap: 5px;
 }
 
 .landmarks-header {
-    grid-column: 1 / -1; /* Чтобы заголовок занимал всю ширину сетки */
+    grid-column: 1 / -1; 
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -257,14 +261,14 @@ body {
 .landmark-card {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px; /* Более острые углы для компактности */
-    padding: 6px 8px;   /* Уменьшенные отступы */
+    border-radius: 6px; 
+    padding: 6px 8px;   
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    min-height: 34px;   /* Фиксированная небольшая высота */
+    min-height: 34px;   
     justify-content: center;
     cursor: default; 
     user-select: none;
@@ -278,7 +282,7 @@ body {
 
 .landmark-name {
     color: #fff;
-    font-size: 11px;    /* Мелкий, но читаемый шрифт */
+    font-size: 11px;    
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -287,14 +291,14 @@ body {
 
 .landmark-time {
     color: #999;
-    font-size: 9px;     /* Совсем маленький шрифт для времени */
+    font-size: 9px;     
     display: flex;
     align-items: center;
     gap: 3px;
     margin-top: 1px;
 }
 
-/* --- СТИЛИ ЛЕГЕНДЫ --- */
+
 .line-selector {
     margin-top: 10px;
     display: flex;
@@ -311,7 +315,7 @@ body {
     padding: 5px;
     border-radius: 4px;
     transition: background 0.2s;
-    pointer-events: auto; /* Разрешаем клики в легенде */
+    pointer-events: auto; 
 }
 
 .line-item:hover {
@@ -339,27 +343,27 @@ body {
     background: #fff;
     cursor: pointer;
     font-size: 12px;
-    display: none; /* Покажем только когда фильтр активен */
+    display: none; 
     pointer-events: auto;
 }
 
-/* --- ЭФФЕКТЫ ПОДСВЕТКИ --- */
 
-/* Плавность для фона и станций */
+
+
 #metro-map image, .station {
     transition: opacity 0.4s ease, filter 0.4s ease;
 }
 
-/* Класс для "затухания" фона */
+
 .map-dimmed #metro-map image {
-    opacity: 0.2; /* Затемняем схему */
-    filter: grayscale(1); /* Делаем её серой */
+    opacity: 0.2; 
+    filter: grayscale(1); 
 }
 
-/* Класс для "затухания" ненужных станций */
+
 .station.not-target {
     opacity: 0.1 !important;
-    pointer-events: none; /* Нельзя нажать на бледные станции */
+    pointer-events: none; 
 }
 
 .side-panel {
@@ -379,7 +383,7 @@ body {
 .side-panel h2 { margin: 0 0 15px 0; font-size: 20px; color: #222; }
 .panel-hint { margin: 15px 0 10px 0; font-size: 13px; color: #666; }
 
-/* ПОИСК ВНУТРИ ПАНЕЛИ */
+
 .search-section { position: relative; margin-bottom: 10px; }
 
 #station-search {
@@ -407,7 +411,7 @@ body {
     z-index: 2100; display: none; margin-top: 5px;
 }
 
-/* СЕТКА ЛИНИЙ (2 колонки) */
+
 .line-selector {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -436,12 +440,149 @@ body {
 #reset-filter:hover { background: #f9f9f9; }
 
 
-/* ============================================================ */
-/* МОБИЛЬНАЯ ВЕРСИЯ (Android и iOS)                             */
-/* ============================================================ */
+.timeline-container {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(300px, 80vw, 900px);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    z-index: 3000;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+
+#toggle-lines-btn {
+    width: 100%;
+    background: none;
+    border: 1px solid #eee;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+    transition: all 0.2s ease;
+    margin-top: 5px;
+}
+
+#toggle-lines-btn:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+#lines-expand-container {
+    max-height: 0; 
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    opacity: 0;
+}
+
+#lines-expand-container.expanded {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+#close-timeline {
+    background: #f0f0f0;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.decades-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.decade-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #eee;
+    background: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.decade-btn:hover { background: #f9f9f9; }
+
+.decade-btn.active {
+    background: var(--line-1); 
+    color: #fff;
+    border-color: var(--line-1);
+    box-shadow: 0 4px 10px rgba(209, 34, 64, 0.3);
+}
+
+.station.not-target {
+    opacity: 0.1 !important;
+    pointer-events: none;
+}
+
+.station.is-future {
+    opacity: 0.05 !important;
+    pointer-events: none;
+}
+
+.map-dimmed #metro-map image {
+    opacity: 0.3;
+    filter: grayscale(0.8);
+}
+
+@media (max-width: 992px) {
+    .timeline-container {
+        width: 95vw;
+        bottom: 10px;
+        padding: 10px;
+    }
+    .decade-btn { padding: 8px 5px; font-size: 11px; }
+}
+
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto; 
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+}
+
+#metro-map {
+    width: 1824px; 
+    height: 2046px;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+}
+
 @media (max-width: 992px) {
     body { 
         cursor: auto; 
+    }
+
+    .zoom-controls {
+        bottom: 100px;
+        right: 15px;
     }
 
     .side-panel {
@@ -469,7 +610,7 @@ body {
     .landmark-name { font-size: 12px; }
 
     .search-wrapper {
-        top: 80px; /* Чтобы не перекрывал легенду */
+        top: 80px; 
         left: 10px;
         right: 10px;
         width: auto;
@@ -482,11 +623,13 @@ body {
     
     #custom-cursor { display: none !important; }
 
-    /* ЗУМ КАРТЫ ДЛЯ ТЕЛЕФОНА */
+    
     #metro-map {
         width: 300%; 
         min-width: 1200px;
     }
+
+
 
     .legend {
         top: 10px; left: 10px; right: 10px;
@@ -494,7 +637,11 @@ body {
     }
     .legend h2 { font-size: 16px; }
 
-    /* МОБИЛЬНЫЙ ПОП-АП (ПО ЦЕНТРУ) */
+    #metro-map {
+        width: 300vw; 
+        height: auto;
+    }
+
     #tooltip {
         display: none; 
         position: fixed !important;
@@ -512,7 +659,7 @@ body {
         background: #1c1c1c !important;
         z-index: 999999 !important;
         
-        /* ЦВЕТНАЯ ПОЛОСКА СВЕРХУ ДЛЯ МОБИЛОК */
+        
         border-left: none !important; 
         border-top: 8px solid transparent !important; 
         
@@ -535,7 +682,7 @@ body {
     #tooltip img { height: 180px; border-radius: 8px; }
     #st-name { font-size: 22px; padding-right: 45px; margin-top: 5px; }
 
-    /* КНОПКА КРЕСТИК (АККУРАТНАЯ ВНУТРИ) */
+    
     #close-btn {
         display: flex !important; 
         position: absolute;
